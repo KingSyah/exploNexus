@@ -1025,7 +1025,7 @@
                         <option value="guristas">Guristas</option>
                         <option value="sansha">Sansha's Nation</option>
                         <option value="serpentis">Serpentis</option>
-                        <option value="drone">Rogue Drones</option>
+                        <option value="rogue">Rogue Drones</option>
                     </select>
                     <select id="combatSecFilter">
                         <option value="">All Security</option>
@@ -1048,6 +1048,7 @@
                     <div class="chip" onclick="combatQuickFilter('guristas')">GURISTAS</div>
                     <div class="chip" onclick="combatQuickFilter('sansha')">SANSHA</div>
                     <div class="chip" onclick="combatQuickFilter('serpentis')">SERPENTIS</div>
+                    <div class="chip" onclick="combatQuickFilter('rogue')">ROGUE DRONES</div>
                     <div class="chip" onclick="combatQuickFilter('highsec')">HIGH-SEC</div>
                 </div>
             </div>
@@ -1249,6 +1250,84 @@
             { name: "Instrumental Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5-C6", notes: "C320/C540 | Sleepers on grid from spawn", gas: "fullerite c320 c540" },
             { name: "Vital Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5-C6", notes: "C320/C540 | Sleepers on grid from spawn", gas: "fullerite c320 c540" },
             
+            // MYKOSEROCIN NEBULA SITES (K-Space High/Low/Null) - Detailed from EVE Uni Wiki
+            // Lime/Frentix Mykoserocin
+            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Aridia, Curse, Derelik, Kador, Khanid, Omist, Solitude, Wicked Creek", notes: "2000 units Lime Mykoserocin (Frentix booster)", gas: "mykoserocin" },
+            { name: "Helix Nebula", type: "Gas", safety: "safe", region: "Aridia, Curse, Derelik, Khanid, Kor-Azor, Solitude", notes: "6000 units Lime Mykoserocin (Frentix booster)", gas: "mykoserocin" },
+            
+            // Malachite/Mindflood Mykoserocin
+            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Aridia, Insmother, Kor-Azor, Curse, Omist, Solitude, Tash-Murkon", notes: "2000 units Malachite Mykoserocin (Mindflood booster)", gas: "mykoserocin" },
+            { name: "Blackeye Nebula", type: "Gas", safety: "safe", region: "Aridia, Curse, Khanid, Kor-Azor, Omist, Solitude", notes: "6000 units Malachite Mykoserocin (Mindflood booster)", gas: "mykoserocin" },
+            
+            // Amber/Blue Pill Mykoserocin
+            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Black Rise, Lonetrek, Outer Passage, Sinq Laison, The Citadel, The Forge, The Spire", notes: "2000 units Amber Mykoserocin (Blue Pill booster)", gas: "mykoserocin" },
+            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "Black Rise, Everyshore, Lonetrek, Outer Passage, Sinq Laison, The Citadel, The Forge, Vale of the Silent", notes: "6000 units Amber Mykoserocin (Blue Pill booster)", gas: "mykoserocin" },
+            
+            // Golden/Crash Mykoserocin
+            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "Black Rise, Everyshore, Lonetrek, Outer Passage, Perrigen Falls, Sinq Laison, The Citadel, The Spire", notes: "2000 units Golden Mykoserocin (Crash booster)", gas: "mykoserocin" },
+            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Black Rise, Everyshore, Lonetrek, Malpais, Outer Passage, Perrigen Falls, Sinq Laison, The Citadel", notes: "6000 units Golden Mykoserocin (Crash booster)", gas: "mykoserocin" },
+            
+            // Celadon/Exile Mykoserocin
+            { name: "Calabash Nebula", type: "Gas", safety: "safe", region: "Domain, Genesis, Placid, Solitude, Fountain", notes: "2000 units Celadon Mykoserocin (Exile booster)", gas: "mykoserocin" },
+            { name: "Glass Nebula", type: "Gas", safety: "safe", region: "Domain, Solitude, Pure Blind, Placid, Genesis", notes: "6000 units Celadon Mykoserocin (Exile booster)", gas: "mykoserocin" },
+            
+            // Viridian/Drop Mykoserocin
+            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Essence, Fountain, Placid, Tenal, Venal", notes: "2000 units Viridian Mykoserocin (Drop booster)", gas: "mykoserocin" },
+            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Domain, Essence, Fountain, Genesis, Placid, Pure Blind, Tenal", notes: "6000 units Viridian Mykoserocin (Drop booster)", gas: "mykoserocin" },
+            
+            // Azure/Sooth Sayer Mykoserocin
+            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Curse, Derelik, Devoid, The Bleak Lands, Heimatar, Molden Heath", notes: "2000 units Azure Mykoserocin (Sooth Sayer booster)", gas: "mykoserocin" },
+            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Curse, Derelik, The Bleak Lands, Heimatar, Insmother, Metropolis, Molden Heath, Tenerifis", notes: "6000 units Azure Mykoserocin (Sooth Sayer booster)", gas: "mykoserocin" },
+            
+            // Vermillion/X-Instinct Mykoserocin
+            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Curse, Derelik, Devoid, The Bleak Lands, Great Wildlands, Heimatar, Insmother, Metropolis, Omist, Tenerifis", notes: "2000 units Vermillion Mykoserocin (X-Instinct booster)", gas: "mykoserocin" },
+            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Curse, Derelik, Devoid, The Bleak Lands, Heimatar, Immensea, Metropolis, Tenerifis", notes: "6000 units Vermillion Mykoserocin (X-Instinct booster)", gas: "mykoserocin" },
+            
+            // CYTOSEROCIN SITES (Null-Sec, with cloud damage mechanics)
+            // Lime Cytoserocin
+            { name: "Emerald Nebula", type: "Gas", safety: "safe", region: "Derelik (Low-Sec)", notes: "500 units Lime Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Cheetah Nebula", type: "Gas", safety: "safe", region: "Catch", notes: "1000 units Lime Cytoserocin | 1000 thermal damage", gas: "cytoserocin" },
+            { name: "Duo Nebula", type: "Gas", safety: "safe", region: "Catch (9HXQ-G)", notes: "3000 units Lime Cytoserocin | 1000 EM + 1000 thermal damage", gas: "cytoserocin" },
+            { name: "Leopard Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "18000 units Lime Cytoserocin | 1400 explosive dmg | NPCs", gas: "cytoserocin" },
+            { name: "Rimy Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "3000 units Lime Cytoserocin | 1000 EM + 1000 thermal dmg | NPCs", gas: "cytoserocin" },
+            
+            // Malachite Cytoserocin
+            { name: "Crimson Nebula", type: "Gas", safety: "safe", region: "Aridia (Low-Sec)", notes: "1000 units Malachite Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Cobra Nebula", type: "Gas", safety: "safe", region: "Delve", notes: "500 units Malachite Cytoserocin | 800 EM + 800 thermal damage", gas: "cytoserocin" },
+            { name: "Hazy Nebula", type: "Gas", safety: "unsafe", region: "Delve (OK-FEM)", notes: "18000 units Malachite Cytoserocin | 800 EM + 700 thermal | NPCs", gas: "cytoserocin" },
+            { name: "Hidden Nebula", type: "Gas", safety: "safe", region: "Delve (OK-FEM)", notes: "6000 units Malachite Cytoserocin | 1000 EM + 1000 thermal damage", gas: "cytoserocin" },
+            
+            // Amber Cytoserocin
+            { name: "Bandit Nebula", type: "Gas", safety: "safe", region: "The Forge (Low-Sec)", notes: "1000 units Amber Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Fluttering Nebula", type: "Gas", safety: "safe", region: "Vale of the Silent", notes: "500 units Amber Cytoserocin | 1000 thermal damage", gas: "cytoserocin" },
+            { name: "Dewy Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent (E-8CSQ)", notes: "6000 units Amber Cytoserocin | 1000 EM + 1000 thermal | NPCs", gas: "cytoserocin" },
+            { name: "Shimmering Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent (E-8CSQ)", notes: "18000 units Amber Cytoserocin | 1400 thermal dmg | NPCs", gas: "cytoserocin" },
+            
+            // Golden Cytoserocin  
+            { name: "Profiteer Nebula", type: "Gas", safety: "safe", region: "Lonetrek (Low-Sec)", notes: "1000 units Golden Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Lion Nebula", type: "Gas", safety: "safe", region: "Tenal (09-4XW)", notes: "6000 units Golden Cytoserocin | 1000 EM + 1000 thermal damage", gas: "cytoserocin" },
+            { name: "Gaseous Nebula", type: "Gas", safety: "unsafe", region: "Tenal (09-4XW)", notes: "18000 units Golden Cytoserocin | 700 EM + 700 thermal | NPCs", gas: "cytoserocin" },
+            
+            // Celadon Cytoserocin
+            { name: "Phoenix Nebula", type: "Gas", safety: "safe", region: "Solitude (Low-Sec)", notes: "1000 units Celadon Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Diamond Nebula", type: "Gas", safety: "unsafe", region: "Fountain (Pegasus)", notes: "6000 units Celadon Cytoserocin | 1000 EM + 1000 thermal | NPCs", gas: "cytoserocin" },
+            { name: "Massive Nebula", type: "Gas", safety: "unsafe", region: "Fountain (Pegasus)", notes: "14224 units Celadon Cytoserocin | 800 thermal dmg | NPCs", gas: "cytoserocin" },
+            
+            // Viridian Cytoserocin
+            { name: "Forgotten Nebula", type: "Gas", safety: "safe", region: "Placid (Low-Sec)", notes: "1000 units Viridian Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Icy Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring (Assilot)", notes: "6000 units Viridian Cytoserocin | 1000 EM + 1000 thermal | NPCs", gas: "cytoserocin" },
+            { name: "Polar Bear Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring (Assilot)", notes: "18000 units Viridian Cytoserocin | 800 thermal dmg | NPCs", gas: "cytoserocin" },
+            
+            // Azure Cytoserocin
+            { name: "Rapture Nebula", type: "Gas", safety: "safe", region: "Molden Heath (Low-Sec)", notes: "1400 units Azure Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Arctic Fox Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek (760-9C)", notes: "9000 units Azure Cytoserocin | 700 EM + 700 thermal | NPCs", gas: "cytoserocin" },
+            { name: "Glistening Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek (760-9C)", notes: "6000 units Azure Cytoserocin | 1000 EM + 1000 thermal | NPCs", gas: "cytoserocin" },
+            
+            // Vermillion Cytoserocin
+            { name: "Saintly Nebula", type: "Gas", safety: "safe", region: "Heimatar (Low-Sec)", notes: "500 units Vermillion Cytoserocin | No damage", gas: "cytoserocin" },
+            { name: "Cardinal Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis (I-3ODK)", notes: "6000 units Vermillion Cytoserocin | 1000 EM + 1000 thermal | NPCs", gas: "cytoserocin" },
+            { name: "Red Dragonfly Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis (I-3ODK)", notes: "18000 units Vermillion Cytoserocin | 700 EM + 700 thermal | NPCs", gas: "cytoserocin" },
+            
             // RELIC SITES - SAFE (No NPCs - K-Space and Wormhole pirate faction sites)
             { name: "Ruined Sansha Crystal Quarry", type: "Relic", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
             { name: "Ruined Sansha Monument Site", type: "Relic", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
@@ -1338,6 +1417,23 @@
             { name: "Sansha Hideaway", faction: "Sansha's Nation", difficulty: 1, security: "High/Low", escalation: "3/10 Command Relay", notes: "Can escalate to DED 3/10" },
             { name: "Serpentis Hideaway", faction: "Serpentis", difficulty: 1, security: "High/Low", escalation: "3/10 Narcotic Warehouse", notes: "Can escalate to DED 3/10" },
             { name: "Drone Cluster", faction: "Rogue Drones", difficulty: 1, security: "High/Low", escalation: "None", notes: "Rogue Drone site" },
+            
+            // ROGUE DRONES - Detailed sites from EVE Uni Wiki
+            // High-Sec Rogue Drones
+            { name: "Drone Collection", faction: "Rogue Drones", difficulty: 1, security: "High-Sec", escalation: "None", notes: "Easy site | Basic drone components | Low bounties" },
+            { name: "Drone Assembly", faction: "Rogue Drones", difficulty: 2, security: "High-Sec", escalation: "None", notes: "Spawns in waves from hollow asteroid | Destroy Cargo Rig to blitz" },
+            { name: "Drone Gathering", faction: "Rogue Drones", difficulty: 2, security: "High-Sec", escalation: "None", notes: "Multiple waves | Frigate/cruiser drones" },
+            
+            // Low-Sec Rogue Drones
+            { name: "Drone Squad", faction: "Rogue Drones", difficulty: 4, security: "Low-Sec", escalation: "None", notes: "Missile batteries present | Good for speed tank (Jackdaw, Caracal)" },
+            { name: "Drone Patrol", faction: "Rogue Drones", difficulty: 4, security: "Low-Sec", escalation: "None", notes: "Mixed drone types | Cruiser/battlecruiser drones" },
+            { name: "Drone Surveillance", faction: "Rogue Drones", difficulty: 5, security: "Low-Sec", escalation: "3/10 Asteroid Infestation", notes: "Sentient Commander spawn chance | Faction drops" },
+            { name: "Drone Herd", faction: "Rogue Drones", difficulty: 5, security: "Low-Sec", escalation: "3/10 Asteroid Infestation", notes: "Asteroid Colony variant | Sentient Commander spawn" },
+            
+            // Null-Sec Rogue Drones
+            { name: "Drone Horde", faction: "Rogue Drones", difficulty: 7, security: "Null-Sec", escalation: "5/10 Drone Hive", notes: "Waves spawn with damage-reducing deployables | Sentient spawns" },
+            { name: "Drone Swarm", faction: "Rogue Drones", difficulty: 8, security: "Null-Sec", escalation: "10/10 Drone Hive", notes: "Large numbers of drones | Battleship-class drones" },
+            { name: "Drone Menagerie", faction: "Rogue Drones", difficulty: 6, security: "Null-Sec", escalation: "5/10 Drone Hive", notes: "Elite drone variants | High-value loot | EM/Thermal resists needed" },
             
             // TIER 2 - Burrows (Low reward, skip these)
             { name: "Angel Burrow", faction: "Angel Cartel", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
@@ -1543,6 +1639,8 @@
                 const matchSafety = !safety || site.safety === safety;
                 const matchType = !type || site.type.toLowerCase().includes(type);
                 const matchRegion = !region || site.region.toLowerCase().includes(region);
+                
+                // Improved gas matching - check if site.gas exists and contains the filter value
                 const matchGas = !gas || (site.gas && site.gas.toLowerCase().includes(gas));
 
                 return matchSearch && matchSafety && matchType && matchRegion && matchGas;
@@ -1643,6 +1741,9 @@
                     break;
                 case 'serpentis':
                     document.getElementById('combatFactionFilter').value = 'serpentis';
+                    break;
+                case 'rogue':
+                    document.getElementById('combatFactionFilter').value = 'rogue';
                     break;
                 case 'highsec':
                     document.getElementById('combatSecFilter').value = 'high';
