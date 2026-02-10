@@ -959,7 +959,6 @@
                         <option value="">All Safety Levels</option>
                         <option value="safe">Safe</option>
                         <option value="unsafe">Unsafe</option>
-                        <option value="warning">Warning</option>
                     </select>
                     <select id="typeFilter">
                         <option value="">All Types</option>
@@ -1390,10 +1389,30 @@
             
             // TIER 8 - Hub
             { name: "Angel Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "8/10 Prisoner Retention", notes: "BS recommended" },
+            { name: "Angel Hidden Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | More triggers" },
+            { name: "Angel Forsaken Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Angel Forlorn Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Hardest" },
+            
             { name: "Blood Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "8/10 Prison Camp", notes: "BS recommended" },
+            { name: "Blood Hidden Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "None", notes: "Elite variant | More triggers" },
+            { name: "Blood Forsaken Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "9/10 DED", notes: "Elite variant | Faction spawns" },
+            { name: "Blood Forlorn Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "9/10 DED", notes: "Elite variant | Hardest" },
+            
             { name: "Guristas Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "8/10 Pith's Penal Complex", notes: "BS recommended" },
+            { name: "Guristas Hidden Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | More triggers" },
+            { name: "Guristas Forsaken Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Guristas Forlorn Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Hardest" },
+            
             { name: "Sansha Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "8/10 Prison Camp", notes: "BS recommended" },
+            { name: "Sansha Hidden Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "Unknown", notes: "Elite variant | More triggers" },
+            { name: "Sansha Forsaken Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Sansha Forlorn Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Hardest" },
+            
             { name: "Serpentis Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "8/10 Prison Camp", notes: "BS recommended" },
+            { name: "Serpentis Hidden Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "None", notes: "Elite variant | More triggers" },
+            { name: "Serpentis Forsaken Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Serpentis Forlorn Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Hardest" },
+            
             { name: "Drone Squad", faction: "Rogue Drones", difficulty: 8, security: "Low/Null", escalation: "10/10 Drone Hive", notes: "BS recommended" },
             
             // TIER 9 - Haven (Null-Sec Only)
@@ -1411,13 +1430,6 @@
             { name: "Sansha Sanctum", faction: "Sansha's Nation", difficulty: 10, security: "Null", escalation: "10/10 Centus Assembly", notes: "Hardest | Carrier/Marauder" },
             { name: "Serpentis Sanctum", faction: "Serpentis", difficulty: 10, security: "Null", escalation: "10/10 Fleet Shipyard", notes: "Hardest | Carrier/Marauder" },
             { name: "Drone Horde", faction: "Rogue Drones", difficulty: 10, security: "Null", escalation: "10/10 Drone Hive", notes: "Hardest | Carrier/Marauder" },
-            
-            // Elite Variants (Hidden, Forsaken, Forlorn)
-            { name: "Angel Forsaken Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
-            { name: "Blood Forsaken Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "9/10 DED", notes: "Elite variant | Faction spawns" },
-            { name: "Guristas Forsaken Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
-            { name: "Sansha Forsaken Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
-            { name: "Serpentis Forsaken Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
         ];
 
         let currentSort = { column: 0, ascending: true };
