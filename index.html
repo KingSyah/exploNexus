@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEBULA NEXUS - EVE Online Gas & Exploration Sites Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #141824;
+            --bg-card: #1a1f2e;
+            --accent: #00d4ff;
+            --accent-hover: #00b8e6;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --border: #2a3142;
+            --safe: #00ff88;
+            --unsafe: #ff4444;
+            --warning: #ffaa00;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        h1 span {
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .search-filter {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .chip {
+            padding: 0.4rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chip:hover, .chip.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: var(--bg-card);
+            position: sticky;
+            top: 0;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-safe {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--safe);
+            border: 1px solid var(--safe);
+        }
+
+        .status-unsafe {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--unsafe);
+            border: 1px solid var(--unsafe);
+        }
+
+        .status-warning {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .site-name {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .info-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .info-section h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .search-filter {
+                padding: 1rem;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1><span>NEBULA</span>NEXUS</h1>
+                <div class="nav-links">
+                    <button class="btn" onclick="showModal('k162')">K162 Spawn</button>
+                    <button class="btn" onclick="showModal('terminology')">WH Terminology</button>
+                    <button class="btn" onclick="showModal('gasguide')">Gas Harvesting</button>
+                    <button class="btn" onclick="showModal('info')">About</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalSites">-</div>
+                <div class="stat-label">Total Sites</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="safeSites">-</div>
+                <div class="stat-label">Safe Sites</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="unsafeSites">-</div>
+                <div class="stat-label">Unsafe Sites</div>
+            </div>
+        </div>
+
+        <div class="search-filter">
+            <div class="filter-grid">
+                <input type="text" id="searchInput" placeholder="🔍 Search site name...">
+                <select id="safetyFilter">
+                    <option value="">All Safety Levels</option>
+                    <option value="safe">Safe</option>
+                    <option value="unsafe">Unsafe</option>
+                    <option value="partial">Partial</option>
+                </select>
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="data">Data Sites</option>
+                    <option value="relic">Relic Sites</option>
+                    <option value="gas">Gas Sites</option>
+                </select>
+                <select id="regionFilter">
+                    <option value="">All Regions</option>
+                    <optgroup label="🌟 Nullsec Regions">
+                        <option value="catch">Catch</option>
+                        <option value="delve">Delve</option>
+                        <option value="vale of the silent">Vale of the Silent</option>
+                        <option value="tenal">Tenal</option>
+                        <option value="fountain">Fountain</option>
+                        <option value="cloud ring">Cloud Ring</option>
+                        <option value="wicked creek">Wicked Creek</option>
+                        <option value="feythabolis">Feythabolis</option>
+                        <option value="omist">Omist</option>
+                        <option value="insmother">Insmother</option>
+                        <option value="tenerifis">Tenerifis</option>
+                        <option value="venal">Venal</option>
+                        <option value="pure blind">Pure Blind</option>
+                    </optgroup>
+                    <optgroup label="⚡ Lowsec/Empire">
+                        <option value="derelik">Derelik</option>
+                        <option value="aridia">Aridia</option>
+                        <option value="the forge">The Forge</option>
+                        <option value="lonetrek">Lonetrek</option>
+                        <option value="solitude">Solitude</option>
+                        <option value="placid">Placid</option>
+                        <option value="molden heath">Molden Heath</option>
+                        <option value="heimatar">Heimatar</option>
+                    </optgroup>
+                    <optgroup label="🌀 Wormhole">
+                        <option value="wormhole">Wormhole Space</option>
+                    </optgroup>
+                </select>
+                <select id="gasFilter">
+                    <option value="">All Gas Types</option>
+                    <option value="lime">Lime (Frentix)</option>
+                    <option value="malachite">Malachite (Mindflood)</option>
+                    <option value="amber">Amber (Blue Pill)</option>
+                    <option value="golden">Golden (Crash)</option>
+                    <option value="celadon">Celadon (Exile)</option>
+                    <option value="viridian">Viridian (Drop)</option>
+                    <option value="azure">Azure (Sooth Sayer)</option>
+                    <option value="vermillion">Vermillion (X-Instinct)</option>
+                    <option value="fullerite">Fullerite (C50-C540)</option>
+                </select>
+            </div>
+            <div class="filter-chips">
+                <div class="chip" onclick="quickFilter('safe')">✓ Safe Only</div>
+                <div class="chip" onclick="quickFilter('gas')">⛽ Gas Sites</div>
+                <div class="chip" onclick="quickFilter('relic')">📦 Relic Sites</div>
+                <div class="chip" onclick="quickFilter('data')">💾 Data Sites</div>
+                <div class="chip" onclick="quickFilter('wormhole')">🌀 Wormhole</div>
+                <div class="chip" onclick="quickFilter('mykoserocin')">🧪 Mykoserocin</div>
+                <div class="chip" onclick="quickFilter('fullerite')">💎 Fullerite</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="sitesTable">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Site Name ▼</th>
+                        <th onclick="sortTable(1)">Type</th>
+                        <th onclick="sortTable(2)">Safety</th>
+                        <th onclick="sortTable(3)">Appears In</th>
+                        <th onclick="sortTable(4)">Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="5" class="loading">Loading exploration sites...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal: K162 Info -->
+    <div id="k162Modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('k162')">&times;</button>
+            <h2 style="color: var(--accent); margin-bottom: 1rem;">K162 Spawn Mechanics</h2>
+            <div class="info-section">
+                <p style="margin-bottom: 1rem;">
+                    <strong>Hyperion expansion (Aug 2014):</strong><br>
+                    K162 appearance only on first jump (or after first warp and less than 15 hours remaining)
+                </p>
+                <p style="color: var(--text-secondary);">
+                    K162 is the "other side" of every wormhole type. It appears to others only when someone jumps through or warps to within 5000km of the wormhole, and the connection has less than 15 hours remaining.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Terminology -->
+    <div id="terminologyModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('terminology')">&times;</button>
+            <h2 style="color: var(--accent); margin-bottom: 1rem;">Common Wormhole Terminology</h2>
+            <div class="info-section" style="max-height: 60vh; overflow-y: auto;">
+                <p><strong>Anoikis</strong> - Lore name for wormhole space (j-space/w-space)</p>
+                <p><strong>Static</strong> - Repeatedly respawning WH connection in a j-space system</p>
+                <p><strong>EOL</strong> - End of life; WH with less than 4 hours lifetime left</p>
+                <p><strong>Destab</strong> - WH with less than 50% mass remaining (destabilized)</p>
+                <p><strong>Crit</strong> - WH with less than 10% mass remaining (critical)</p>
+                <p><strong>Frig hole</strong> - Smallest WH with ship size restriction up to Frigates/Destroyers</p>
+                <p><strong>Shattered</strong> - WH systems where all planets are shattered, no structures can be anchored</p>
+                <p><strong>Roll</strong> - Putting enough mass through a WH to collapse it</p>
+                <p><strong>Rage roll</strong> - Repeatedly rolling one's static connection searching for content</p>
+                <p><strong>Rolling battleship</strong> - Battleship fit with Higgs Anchor rig and propulsion for rolling WHs</p>
+                <p><strong>Rolling HIC</strong> - Heavy Interdiction Cruiser fit for rolling medium and crit WHs</p>
+                <p><strong>Cold pass</strong> - Jumping through WH with propulsion off (doesn't increase ship mass)</p>
+                <p><strong>Hot pass</strong> - Jumping through WH with propulsion on (increases ship mass)</p>
+                <p><strong>Eviction</strong> - Act of sieging, destroying and taking over an enemy WH system</p>
+                <p><strong>Hole control</strong> - Holding control of all incoming/outgoing WH connections during eviction</p>
+                <p><strong>Doorstop</strong> - Ship on outside of crit WH with enough mass to roll it instantly</p>
+                <p><strong>K162</strong> - Other side of every wormhole type</p>
+                <p><strong>Bob</strong> - Wormhole god. That is all.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Gas Harvesting Guide -->
+    <div id="gasguideModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('gasguide')">&times;</button>
+            <h2 style="color: var(--accent); margin-bottom: 1rem;">Gas Harvesting Guide</h2>
+            <div class="info-section" style="max-height: 60vh; overflow-y: auto;">
+                <h3>Types of Gas</h3>
+                
+                <p><strong>Mykoserocin</strong> - Used for synth combat boosters and neurolink enhancers (capital production)</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>Found in High, Low, and Nullsec</li>
+                    <li>No NPCs, no deadspace</li>
+                    <li>8 flavors: Lime, Malachite, Amber, Golden, Celadon, Viridian, Azure, Vermillion</li>
+                    <li>Volume: 10 m³ per unit</li>
+                </ul>
+
+                <p><strong>Cytoserocin</strong> - Used for stronger combat boosters</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>Concentrated in specific constellations in Nullsec/Lowsec</li>
+                    <li>Many sites are unstable - clouds explode dealing damage</li>
+                    <li>Some sites have NPCs or are in deadspace</li>
+                    <li>Same 8 flavors as Mykoserocin</li>
+                    <li>Volume: 10 m³ per unit</li>
+                </ul>
+
+                <p><strong>Fullerenes</strong> - Used for Tech III and Capital production</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>Only found in Wormhole space</li>
+                    <li>Sleepers spawn after 15-20 minutes (ninja harvest possible)</li>
+                    <li>Types: C50, C60, C70, C72, C84, C28, C32, C320, C540</li>
+                    <li>C320/C540 only in C5/C6 WHs - highest value</li>
+                    <li>⚠️ Ordinary Perimeter Reservoir has sentries on grid!</li>
+                    <li>Volume: 1-10 m³ per unit</li>
+                </ul>
+
+                <h3 style="margin-top: 1.5rem;">Equipment</h3>
+                
+                <p><strong>Ships:</strong></p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li><strong>Venture</strong> - Best for beginners, 2 gas scoops, 5,000 m³ gas hold</li>
+                    <li><strong>Prospect</strong> - Covert ops cloak, 10,000 m³ gas hold, same yield as Venture</li>
+                    <li>Mining Barges/Exhumers - Can use Gas Cloud Harvesters (not recommended)</li>
+                </ul>
+
+                <p><strong>Modules:</strong></p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>Gas Cloud Scoop I - 20 m³/min (30s cycle)</li>
+                    <li>Gas Cloud Scoop II - 30 m³/min (40s cycle, needs Gas Cloud Harvesting V)</li>
+                    <li>Syndicate Gas Cloud Scoop - 40 m³/min (30s cycle, best yield)</li>
+                    <li>Range: 1.5 km (very short!)</li>
+                </ul>
+
+                <p><strong>Skills:</strong></p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>Gas Cloud Harvesting - Required, 1 harvester per level (train to II or V)</li>
+                    <li>Mining Frigate - Reduces cycle time on Venture/Prospect</li>
+                    <li>Mining IV - Prerequisite for Gas Cloud Harvesting</li>
+                </ul>
+
+                <h3 style="margin-top: 1.5rem;">Tips & Safety</h3>
+                <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                    <li>🔍 Enable "Harvestable Clouds" in overview settings</li>
+                    <li>⏱️ Wormhole sites: Harvest for 15-20 min, then warp out before Sleepers spawn</li>
+                    <li>🛡️ Cytoserocin: Watch for cloud explosions - tank accordingly</li>
+                    <li>💰 Check market prices - C320/C540 are most valuable but dangerous</li>
+                    <li>👥 High-value WH sites: Consider fleet operations with haulers & scouts</li>
+                    <li>📦 Use mobile depot in Prospect for refitting</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: About -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('info')">&times;</button>
+            <h2 style="color: var(--accent); margin-bottom: 1rem;">About NEBULA NEXUS</h2>
+            <div class="info-section">
+                <p style="margin-bottom: 1rem;">
+                    <strong>NEBULA NEXUS</strong> is a comprehensive exploration and gas harvesting database designed for EVE Online capsuleers. 
+                    This tool provides essential safety information, gas compositions, and region-specific site data to help you navigate the dangers of New Eden.
+                </p>
+                
+                <h3 style="margin-top: 1.5rem;">Features</h3>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>✅ <strong>150+ Exploration Sites</strong> - Complete database of Data, Relic, and Gas sites</li>
+                    <li>🗺️ <strong>Region-Specific Data</strong> - Accurate spawn locations for all gas types</li>
+                    <li>⚠️ <strong>Safety Indicators</strong> - Know which sites have NPCs, damage, or deadspace</li>
+                    <li>🔍 <strong>Advanced Filtering</strong> - Search by site name, type, region, gas flavor, and safety</li>
+                    <li>💎 <strong>Fullerite Guide</strong> - Complete wormhole gas site information (C50-C540)</li>
+                    <li>🧪 <strong>Cytoserocin & Mykoserocin</strong> - All nullsec and k-space gas nebulae mapped</li>
+                    <li>📱 <strong>Mobile Responsive</strong> - Works on all devices</li>
+                </ul>
+
+                <h3 style="margin-top: 1.5rem;">Data Sources</h3>
+                <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">
+                    This database aggregates information from multiple trusted sources:
+                </p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li><a href="https://whtype.info/safe-explo" style="color: var(--accent);" target="_blank">whtype.info</a> - Wormhole database by Sothis Ast</li>
+                    <li><a href="https://wiki.eveuniversity.org/Gas_cloud_harvesting" style="color: var(--accent);" target="_blank">EVE University Wiki</a> - Gas harvesting comprehensive guide</li>
+                    <li><a href="https://wiki.signalcartel.space/Public:Exploration_Site_Safety_Guide" style="color: var(--accent);" target="_blank">Signal Cartel</a> - Explorer's Compendium safety data</li>
+                </ul>
+
+                <h3 style="margin-top: 1.5rem;">Developer</h3>
+                <p style="color: var(--text-secondary);">
+                    <strong style="color: var(--accent);">kingsyah</strong><br>
+                    Created for the EVE Online Indonesian community and all New Eden explorers<br>
+                    <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" style="color: var(--accent);" target="_blank">📋 Full Documentation</a>
+                </p>
+
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-secondary);">
+                    <p style="margin-bottom: 0.5rem;">All EVE Online related materials are property of CCP Games.</p>
+                    <p>EVE Online and all associated logos and designs are the intellectual property of CCP hf. All rights reserved worldwide.</p>
+                    <p style="margin-top: 0.5rem; font-style: italic;">This is a fan-made tool and is not affiliated with or endorsed by CCP Games.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: left; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem;">⚡ NEBULA NEXUS</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Comprehensive exploration & gas harvesting database for EVE Online capsuleers. Navigate New Eden with confidence.</p>
+                    <p style="margin-top: 0.75rem; font-size: 0.85rem;">
+                        <strong style="color: var(--accent);">150+ Sites</strong> • 
+                        <strong style="color: var(--accent);">3 Gas Types</strong> • 
+                        <strong style="color: var(--accent);">Real-time Filtering</strong>
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem;">🛠️ Companion Tools</h3>
+                    <p style="font-size: 0.85rem; line-height: 1.8;">
+                        <a href="https://kingsyah.github.io/evetimeinfo/" style="color: var(--text-primary); text-decoration: none; display: block;" target="_blank">
+                            🕐 <strong>EVE Times Info</strong><br>
+                            <span style="color: var(--text-secondary); font-size: 0.8rem; margin-left: 1.2rem;">Server status, downtime tracker & world clocks</span>
+                        </a>
+                    </p>
+                    <p style="font-size: 0.85rem; line-height: 1.8; margin-top: 0.5rem;">
+                        <a href="https://kingsyah.github.io/KalkulatorYield/" style="color: var(--text-primary); text-decoration: none; display: block;" target="_blank">
+                            ⛏️ <strong>Mining Yield Calculator</strong><br>
+                            <span style="color: var(--text-secondary); font-size: 0.8rem; margin-left: 1.2rem;">Calculate mining efficiency & gas harvesting rates</span>
+                        </a>
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem;">📚 Resources</h3>
+                    <p style="font-size: 0.85rem; line-height: 1.8;">
+                        • <a href="https://whtype.info/safe-explo" style="color: var(--text-secondary); text-decoration: none;" target="_blank">whtype.info</a> - WH Database<br>
+                        • <a href="https://wiki.eveuniversity.org/Gas_cloud_harvesting" style="color: var(--text-secondary); text-decoration: none;" target="_blank">EVE Uni Wiki</a> - Gas Harvesting<br>
+                        • <a href="https://www.fuzzwork.co.uk/ore/gas.html" style="color: var(--text-secondary); text-decoration: none;" target="_blank">Fuzzwork</a> - Gas Price Calculator<br>
+                        • <a href="https://eve-scout.com/" style="color: var(--text-secondary); text-decoration: none;" target="_blank">Eve-Scout</a> - Thera & Turnur Mapping<br>
+                        • <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" style="color: var(--text-secondary); text-decoration: none;" target="_blank">Documentation</a> - Full Guide
+                    </p>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center;">
+                <p style="margin-bottom: 0.5rem; color: var(--text-primary);">
+                    Forged in New Eden by <strong style="color: var(--accent);">kingsyah</strong> 
+                    <span style="color: var(--text-secondary);">• Created for EVE Online Indonesian Community</span>
+                </p>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                    All EVE Online materials © <a href="https://www.ccpgames.com/" style="color: var(--accent); text-decoration: none;" target="_blank">CCP Games</a> • 
+                    EVE Online and all associated logos are trademarks of CCP hf.
+                </p>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic;">
+                    Fan-made tool • Not affiliated with or endorsed by CCP Games
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Comprehensive exploration sites data
+        const explorationSites = [
+            // === MYKOSEROCIN GAS SITES (K-SPACE - HISEC/LOWSEC/NULLSEC) ===
+            // Lime/Frentix
+            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
+            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Curse", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
+            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Derelik", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
+            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
+            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Wicked Creek", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
+            { name: "Helix Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Lime Mykoserocin | 6,000 units | No NPCs", gas: "Lime", units: 6000 },
+            { name: "Helix Nebula", type: "Gas", safety: "safe", region: "Curse", notes: "Lime Mykoserocin | 6,000 units | No NPCs", gas: "Lime", units: 6000 },
+            
+            // Malachite/Mindflood
+            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Malachite Mykoserocin | 2,000 units | No NPCs", gas: "Malachite", units: 2000 },
+            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Insmother", notes: "Malachite Mykoserocin | 2,000 units | No NPCs", gas: "Malachite", units: 2000 },
+            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Malachite Mykoserocin | 2,000 units | No NPCs", gas: "Malachite", units: 2000 },
+            { name: "Blackeye Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Malachite Mykoserocin | 6,000 units | No NPCs", gas: "Malachite", units: 6000 },
+            { name: "Blackeye Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Malachite Mykoserocin | 6,000 units | No NPCs", gas: "Malachite", units: 6000 },
+            
+            // Amber/Blue Pill
+            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Black Rise", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
+            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
+            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Outer Passage", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
+            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "The Spire", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
+            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "Black Rise", notes: "Amber Mykoserocin | 6,000 units | No NPCs", gas: "Amber", units: 6000 },
+            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "The Forge", notes: "Amber Mykoserocin | 6,000 units | No NPCs", gas: "Amber", units: 6000 },
+            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "Vale of the Silent", notes: "Amber Mykoserocin | 6,000 units | No NPCs", gas: "Amber", units: 6000 },
+            
+            // Golden/Crash
+            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Golden Mykoserocin | 2,000 units | No NPCs", gas: "Golden", units: 2000 },
+            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "Perrigen Falls", notes: "Golden Mykoserocin | 2,000 units | No NPCs", gas: "Golden", units: 2000 },
+            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "The Spire", notes: "Golden Mykoserocin | 2,000 units | No NPCs", gas: "Golden", units: 2000 },
+            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Golden Mykoserocin | 6,000 units | No NPCs", gas: "Golden", units: 6000 },
+            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Malpais", notes: "Golden Mykoserocin | 6,000 units | No NPCs", gas: "Golden", units: 6000 },
+            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Perrigen Falls", notes: "Golden Mykoserocin | 6,000 units | No NPCs", gas: "Golden", units: 6000 },
+            
+            // Celadon/Exile
+            { name: "Calabash Nebula", type: "Gas", safety: "safe", region: "Domain", notes: "Celadon Mykoserocin | 2,000 units | No NPCs", gas: "Celadon", units: 2000 },
+            { name: "Calabash Nebula", type: "Gas", safety: "safe", region: "Fountain", notes: "Celadon Mykoserocin | 2,000 units | No NPCs", gas: "Celadon", units: 2000 },
+            { name: "Glass Nebula", type: "Gas", safety: "safe", region: "Domain", notes: "Celadon Mykoserocin | 6,000 units | No NPCs", gas: "Celadon", units: 6000 },
+            { name: "Glass Nebula", type: "Gas", safety: "safe", region: "Pure Blind", notes: "Celadon Mykoserocin | 6,000 units | No NPCs", gas: "Celadon", units: 6000 },
+            
+            // Viridian/Drop
+            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Essence", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
+            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Fountain", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
+            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Tenal", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
+            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Venal", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
+            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Essence", notes: "Viridian Mykoserocin | 6,000 units | No NPCs", gas: "Viridian", units: 6000 },
+            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Pure Blind", notes: "Viridian Mykoserocin | 6,000 units | No NPCs", gas: "Viridian", units: 6000 },
+            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Tenal", notes: "Viridian Mykoserocin | 6,000 units | No NPCs", gas: "Viridian", units: 6000 },
+            
+            // Azure/Sooth Sayer
+            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Curse", notes: "Azure Mykoserocin | 2,000 units | No NPCs", gas: "Azure", units: 2000 },
+            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Azure Mykoserocin | 2,000 units | No NPCs", gas: "Azure", units: 2000 },
+            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Molden Heath", notes: "Azure Mykoserocin | 2,000 units | No NPCs", gas: "Azure", units: 2000 },
+            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Azure Mykoserocin | 6,000 units | No NPCs", gas: "Azure", units: 6000 },
+            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Insmother", notes: "Azure Mykoserocin | 6,000 units | No NPCs", gas: "Azure", units: 6000 },
+            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Tenerifis", notes: "Azure Mykoserocin | 6,000 units | No NPCs", gas: "Azure", units: 6000 },
+            
+            // Vermillion/X-Instinct
+            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
+            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Great Wildlands", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
+            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Insmother", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
+            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
+            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Tenerifis", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
+            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Vermillion Mykoserocin | 6,000 units | No NPCs", gas: "Vermillion", units: 6000 },
+            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Immensea", notes: "Vermillion Mykoserocin | 6,000 units | No NPCs", gas: "Vermillion", units: 6000 },
+            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Tenerifis", notes: "Vermillion Mykoserocin | 6,000 units | No NPCs", gas: "Vermillion", units: 6000 },
+
+            // === CYTOSEROCIN GAS SITES (NULLSEC/LOWSEC) ===
+            // Lime/Frentix - Catch/Derelik
+            { name: "Emerald Nebula", type: "Gas", safety: "safe", region: "Derelik", notes: "Lime Cytoserocin | 500 units | Lowsec | No NPCs | No damage", gas: "Lime", units: 500 },
+            { name: "Cheetah Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 1,000 units | Nullsec | No NPCs | 1000 thermal dmg", gas: "Lime", units: 1000 },
+            { name: "Duo Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 3,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Lime", units: 3000 },
+            { name: "Leopard Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 18,000 units | Nullsec | NPCs | 1400 explosive dmg", gas: "Lime", units: 18000 },
+            { name: "Rimy Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 3,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Lime", units: 3000 },
+            
+            // Malachite/Mindflood - Delve/Aridia
+            { name: "Crimson Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Malachite Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Malachite", units: 1000 },
+            { name: "Cobra Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 500 units | Nullsec | No NPCs | 800 EM + 800 thermal", gas: "Malachite", units: 500 },
+            { name: "Crab Spider Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Malachite", units: 2000 },
+            { name: "Hazy Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 18,000 units | Nullsec | NPCs | 800 EM + 700 thermal", gas: "Malachite", units: 18000 },
+            { name: "Hidden Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 6,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Malachite", units: 6000 },
+            { name: "Whirling Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 6,000 units | Nullsec | NPCs | Deadspace | 1000 EM + 1000 thermal", gas: "Malachite", units: 6000 },
+            
+            // Amber/Blue Pill - Vale of the Silent/The Forge
+            { name: "Bandit Nebula", type: "Gas", safety: "safe", region: "The Forge", notes: "Amber Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Amber", units: 1000 },
+            { name: "Fluttering Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 500 units | Nullsec | No NPCs | 1000 thermal", gas: "Amber", units: 500 },
+            { name: "Rocky Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 832 units | Nullsec | No NPCs | 2500 thermal", gas: "Amber", units: 832 },
+            { name: "Dewy Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Amber", units: 6000 },
+            { name: "Foggy Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Amber", units: 6000 },
+            { name: "Shimmering Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 18,000 units | Nullsec | NPCs | 1400 thermal", gas: "Amber", units: 18000 },
+            { name: "Spacious Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 6,000 units | Nullsec | No NPCs | Mixed damage", gas: "Amber", units: 6000 },
+            
+            // Golden/Crash - Tenal/Lonetrek
+            { name: "Profiteer Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Golden Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Golden", units: 1000 },
+            { name: "Moth Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Golden", units: 2000 },
+            { name: "Swarm Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 2,000 units | Nullsec | No NPCs | Deadspace | 1000 thermal", gas: "Golden", units: 2000 },
+            { name: "Lion Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 6,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Golden", units: 6000 },
+            { name: "Shiny Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Golden", units: 6000 },
+            { name: "Gaseous Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 18,000 units | Nullsec | NPCs | 700 EM + 700 thermal", gas: "Golden", units: 18000 },
+            
+            // Celadon/Exile - Fountain/Solitude
+            { name: "Phoenix Nebula", type: "Gas", safety: "safe", region: "Solitude", notes: "Celadon Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Celadon", units: 1000 },
+            { name: "Flowing Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 2,000 units | Nullsec | No NPCs | 1000 thermal", gas: "Celadon", units: 2000 },
+            { name: "Thick Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 1,000 units | Nullsec | NPCs", gas: "Celadon", units: 1000 },
+            { name: "Diamond Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Celadon", units: 6000 },
+            { name: "Massive Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 14,224 units | Nullsec | NPCs | 800 thermal", gas: "Celadon", units: 14224 },
+            { name: "Peacock Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 6,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Celadon", units: 6000 },
+            
+            // Viridian/Drop - Cloud Ring/Placid
+            { name: "Forgotten Nebula", type: "Gas", safety: "safe", region: "Placid", notes: "Viridian Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Viridian", units: 1000 },
+            { name: "Frosty Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Viridian", units: 2000 },
+            { name: "Goose Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 2,000 units | Nullsec | No NPCs | 1000 thermal", gas: "Viridian", units: 2000 },
+            { name: "Icy Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Viridian", units: 6000 },
+            { name: "Pale Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 3,000+ units | Nullsec | No NPCs | 1000 thermal", gas: "Viridian", units: 3000 },
+            { name: "Polar Bear Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 18,000 units | Nullsec | NPCs | 800 thermal", gas: "Viridian", units: 18000 },
+            
+            // Azure/Sooth Sayer - Wicked Creek/Molden Heath
+            { name: "Rapture Nebula", type: "Gas", safety: "safe", region: "Molden Heath", notes: "Azure Cytoserocin | 1,400 units | Lowsec | No NPCs | No damage", gas: "Azure", units: 1400 },
+            { name: "Crystal Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 2,000 units | Nullsec | No NPCs | 400 thermal", gas: "Azure", units: 2000 },
+            { name: "Snowy Owl Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Azure", units: 2000 },
+            { name: "Arctic Fox Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 9,000 units | Nullsec | NPCs | 700 EM + 700 thermal", gas: "Azure", units: 9000 },
+            { name: "Glistening Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Azure", units: 6000 },
+            { name: "Murky Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 3,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Azure", units: 3000 },
+            
+            // Vermillion/X-Instinct - Feythabolis/Heimatar
+            { name: "Saintly Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Vermillion Cytoserocin | 500 units | Lowsec | No NPCs", gas: "Vermillion", units: 500 },
+            { name: "Boisterous Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 2,000 units | Nullsec | No NPCs | 1000 thermal", gas: "Vermillion", units: 2000 },
+            { name: "Cardinal Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Vermillion", units: 6000 },
+            { name: "Red Dragonfly Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 18,000 units | Nullsec | NPCs | 700 EM + 700 thermal", gas: "Vermillion", units: 18000 },
+            { name: "Wispy Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 6,000 units | Nullsec | No NPCs | Deadspace | 1000 EM + 1000 thermal", gas: "Vermillion", units: 6000 },
+
+            // === FULLERITE GAS SITES (WORMHOLE SPACE) ===
+            { name: "Barren Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C50 & C84 | Sleepers spawn ~15-20min | Low value", gas: "C50/C84", units: "Varies" },
+            { name: "Token Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C60 & C70 | Sleepers spawn ~15-20min | Low-Mid value", gas: "C60/C70", units: "Varies" },
+            { name: "Minor Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C70 & C72 | Sleepers spawn ~15-20min | Mid value", gas: "C70/C72", units: "Varies" },
+            { name: "Ordinary Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C72 & C84 | 5 Sentries on grid immediately! | Mid value", gas: "C72/C84", units: "Varies" },
+            { name: "Sizable Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C84 & C50 | Sleepers spawn ~15-20min | Low value", gas: "C84/C50", units: "Varies" },
+            { name: "Bountiful Frontier Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C28 & C32 | Sleepers spawn ~15-20min | Mid value", gas: "C28/C32", units: "Varies" },
+            { name: "Vast Frontier Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C32 & C28 | Sleepers spawn ~15-20min | Low-Mid value", gas: "C32/C28", units: "Varies" },
+            { name: "Instrumental Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5/C6", notes: "C320 & C540 | Sleepers spawn ~15-20min | HIGH VALUE", gas: "C320/C540", units: "Varies" },
+            { name: "Vital Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5/C6", notes: "C540 & C320 | Sleepers spawn ~15-20min | HIGH VALUE", gas: "C540/C320", units: "Varies" },
+
+            // === RELIC & DATA SITES ===
+            
+            // SAFE Pirate Sites (K-Space - All Security)
+            { name: "Crumbling Sansha Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Sansha space" },
+            { name: "Decayed Sansha Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Sansha space" },
+            { name: "Ruined Sansha Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Sansha space" },
+            
+            { name: "Crumbling Blood Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Blood Raider space" },
+            { name: "Decayed Blood Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Blood Raider space" },
+            { name: "Ruined Blood Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Blood Raider space" },
+            
+            { name: "Crumbling Guristas Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Guristas space" },
+            { name: "Decayed Guristas Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Guristas space" },
+            { name: "Ruined Guristas Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Guristas space" },
+            
+            { name: "Crumbling Serpentis Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Serpentis space" },
+            { name: "Decayed Serpentis Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Serpentis space" },
+            { name: "Ruined Serpentis Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Serpentis space" },
+            
+            { name: "Crumbling Angel Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Angel space" },
+            { name: "Decayed Angel Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Angel space" },
+            { name: "Ruined Angel Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Angel space" },
+            
+            // SAFE Pirate Data Sites (K-Space)
+            { name: "Local Sansha Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Sansha space" },
+            { name: "Regional Sansha Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Sansha space" },
+            { name: "Central Sansha Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Sansha space" },
+            
+            { name: "Local Blood Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Blood Raider space" },
+            { name: "Regional Blood Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Blood Raider space" },
+            { name: "Central Blood Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Blood Raider space" },
+            
+            { name: "Local Guristas Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Guristas space" },
+            { name: "Regional Guristas Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Guristas space" },
+            { name: "Central Guristas Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Guristas space" },
+            
+            { name: "Local Serpentis Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Serpentis space" },
+            { name: "Regional Serpentis Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Serpentis space" },
+            { name: "Central Serpentis Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Serpentis space" },
+            
+            { name: "Local Angel Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Angel space" },
+            { name: "Regional Angel Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Angel space" },
+            { name: "Central Angel Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Angel space" },
+            
+            // SAFE Wormhole Sites (C1-C3 ONLY!)
+            { name: "Ruined Sansha Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Blood Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Guristas Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Serpentis Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Angel Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            
+            { name: "Central Sansha Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Blood Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Guristas Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Serpentis Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Angel Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            
+            // UNSAFE Sleeper Sites (C2-C6 Wormholes)
+            { name: "Forgotten Perimeter Coronation Platform", type: "Data", safety: "unsafe", region: "Wormhole C2-C3", notes: "Sleepers on grid | Combat required" },
+            { name: "Forgotten Perimeter Power Array", type: "Relic", safety: "unsafe", region: "Wormhole C2-C3", notes: "Sleepers on grid | Combat required" },
+            
+            { name: "Forgotten Frontier Quarantine Outpost", type: "Data", safety: "unsafe", region: "Wormhole C4", notes: "Sleepers on grid | Combat required" },
+            { name: "Forgotten Frontier Recursive Depot", type: "Relic", safety: "unsafe", region: "Wormhole C4", notes: "Sleepers on grid | Combat required" },
+            
+            { name: "Forgotten Core Data Field", type: "Data", safety: "unsafe", region: "Wormhole C5-C6", notes: "Heavy Sleepers on grid | Fleet recommended" },
+            { name: "Forgotten Core Information Pen", type: "Relic", safety: "unsafe", region: "Wormhole C5-C6", notes: "Heavy Sleepers on grid | Fleet recommended" },
+            
+            { name: "Unsecured Perimeter Amplifier", type: "Data", safety: "unsafe", region: "Wormhole C2-C3", notes: "Sleepers on grid | Combat required" },
+            { name: "Unsecured Frontier Digital Nexus", type: "Data", safety: "unsafe", region: "Wormhole C4", notes: "Sleepers on grid | Combat required" },
+            { name: "Unsecured Core Backup Array", type: "Data", safety: "unsafe", region: "Wormhole C5-C6", notes: "Heavy Sleepers on grid | Fleet recommended" },
+            
+            // Ghost Sites (UNSAFE - All locations)
+            { name: "Lesser Covert Research Facility", type: "Data", safety: "unsafe", region: "High-Sec", notes: "Timer | Exploding cans | Ghost site" },
+            { name: "Standard Covert Research Facility", type: "Data", safety: "unsafe", region: "Low-Sec", notes: "Timer | Exploding cans | Ghost site" },
+            { name: "Improved Covert Research Facility", type: "Data", safety: "unsafe", region: "Null-Sec", notes: "Timer | Exploding cans | Ghost site" },
+            { name: "Superior Covert Research Facility", type: "Data", safety: "unsafe", region: "Wormhole", notes: "Timer | Exploding cans | Ghost site" },
+            
+            // Sleeper Caches (UNSAFE - K-Space only)
+            { name: "Limited Sleeper Cache", type: "Data", safety: "unsafe", region: "K-Space", notes: "Triggers | Explosions | No NPCs" },
+            { name: "Standard Sleeper Cache", type: "Data", safety: "unsafe", region: "K-Space", notes: "Triggers | Explosions | Sentries" },
+            { name: "Superior Sleeper Cache", type: "Data", safety: "unsafe", region: "K-Space", notes: "Triggers | Explosions | Heavy Sentries" },
+            
+            // Drone Sites (UNSAFE)
+            { name: "Abandoned Research Complex DA005", type: "Data", safety: "unsafe", region: "Drone Regions", notes: "Rogue Drones spawn on fail | Nullsec" },
+            { name: "Abandoned Research Complex DA015", type: "Data", safety: "unsafe", region: "Drone Regions", notes: "Rogue Drones spawn on fail | Nullsec" },
+            { name: "Abandoned Research Complex DC007", type: "Data", safety: "unsafe", region: "Drone Regions", notes: "Rogue Drones spawn on fail | Nullsec" },
+            
+            // Special Wormhole Sites
+            { name: "Silent Battleground", type: "Data/Relic", safety: "safe", region: "Shattered WH", notes: "20 cans | No NPCs | Timer despawn | Very rare" },
+        ];
+
+        let currentSort = { column: 0, ascending: true };
+        let filteredSites = [...explorationSites];
+
+        // Initialize page
+        function init() {
+            renderTable(explorationSites);
+            updateStats();
+            setupEventListeners();
+        }
+
+        // Render table
+        function renderTable(sites) {
+            const tbody = document.getElementById('tableBody');
+            
+            if (sites.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">No sites found matching your filters</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sites.map(site => `
+                <tr>
+                    <td class="site-name">${site.name}</td>
+                    <td>${site.type}</td>
+                    <td><span class="status-badge status-${site.safety}">${site.safety.toUpperCase()}</span></td>
+                    <td>${site.region}</td>
+                    <td style="color: var(--text-secondary); font-size: 0.9rem;">${site.notes}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalSites').textContent = explorationSites.length;
+            document.getElementById('safeSites').textContent = explorationSites.filter(s => s.safety === 'safe').length;
+            document.getElementById('unsafeSites').textContent = explorationSites.filter(s => s.safety === 'unsafe').length;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('safetyFilter').addEventListener('change', applyFilters);
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
+            document.getElementById('regionFilter').addEventListener('change', applyFilters);
+            document.getElementById('gasFilter').addEventListener('change', applyFilters);
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const safety = document.getElementById('safetyFilter').value.toLowerCase();
+            const type = document.getElementById('typeFilter').value.toLowerCase();
+            const region = document.getElementById('regionFilter').value.toLowerCase();
+            const gas = document.getElementById('gasFilter').value.toLowerCase();
+
+            filteredSites = explorationSites.filter(site => {
+                const matchSearch = site.name.toLowerCase().includes(search) || 
+                                  (site.notes && site.notes.toLowerCase().includes(search));
+                const matchSafety = !safety || site.safety === safety;
+                const matchType = !type || site.type.toLowerCase().includes(type);
+                const matchRegion = !region || site.region.toLowerCase().includes(region);
+                const matchGas = !gas || (site.gas && site.gas.toLowerCase().includes(gas));
+
+                return matchSearch && matchSafety && matchType && matchRegion && matchGas;
+            });
+
+            renderTable(filteredSites);
+        }
+
+        // Quick filter
+        function quickFilter(filter) {
+            // Remove active class from all chips
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            
+            // Add active class to clicked chip
+            event.target.classList.add('active');
+
+            // Reset all filters first
+            document.getElementById('safetyFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('regionFilter').value = '';
+            document.getElementById('gasFilter').value = '';
+
+            switch(filter) {
+                case 'safe':
+                    document.getElementById('safetyFilter').value = 'safe';
+                    break;
+                case 'gas':
+                    document.getElementById('typeFilter').value = 'gas';
+                    break;
+                case 'relic':
+                    document.getElementById('typeFilter').value = 'relic';
+                    break;
+                case 'data':
+                    document.getElementById('typeFilter').value = 'data';
+                    break;
+                case 'wormhole':
+                    document.getElementById('regionFilter').value = 'wormhole';
+                    break;
+                case 'mykoserocin':
+                    document.getElementById('typeFilter').value = 'gas';
+                    document.getElementById('gasFilter').value = 'lime,malachite,amber,golden,celadon,viridian,azure,vermillion';
+                    break;
+                case 'fullerite':
+                    document.getElementById('typeFilter').value = 'gas';
+                    document.getElementById('gasFilter').value = 'fullerite';
+                    break;
+            }
+            
+            applyFilters();
+        }
+
+        // Sort table
+        function sortTable(column) {
+            if (currentSort.column === column) {
+                currentSort.ascending = !currentSort.ascending;
+            } else {
+                currentSort.column = column;
+                currentSort.ascending = true;
+            }
+
+            const keys = ['name', 'type', 'safety', 'region', 'notes'];
+            const key = keys[column];
+
+            filteredSites.sort((a, b) => {
+                let valA = a[key].toLowerCase();
+                let valB = b[key].toLowerCase();
+
+                if (valA < valB) return currentSort.ascending ? -1 : 1;
+                if (valA > valB) return currentSort.ascending ? 1 : -1;
+                return 0;
+            });
+
+            renderTable(filteredSites);
+        }
+
+        // Modal functions
+        function showModal(type) {
+            document.getElementById(type + 'Modal').classList.add('active');
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+
+        // Close modal on background click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
