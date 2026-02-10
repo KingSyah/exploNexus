@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEBULA NEXUS - EVE Online Gas & Exploration Sites Database</title>
+    <title>NEBULA NEXUS - EVE Online Sites Database</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,41 +13,74 @@
         }
 
         :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #141824;
-            --bg-card: #1a1f2e;
-            --accent: #00d4ff;
-            --accent-hover: #00b8e6;
-            --text-primary: #e8eaed;
-            --text-secondary: #9aa0a6;
-            --border: #2a3142;
-            --safe: #00ff88;
-            --unsafe: #ff4444;
-            --warning: #ffaa00;
+            --bg-primary: #050a14;
+            --bg-secondary: #0a1120;
+            --bg-card: #0f1828;
+            --bg-elevated: #141d30;
+            --accent-primary: #00e5ff;
+            --accent-secondary: #00ffaa;
+            --accent-danger: #ff2d55;
+            --accent-warning: #ffb800;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: rgba(0, 229, 255, 0.15);
+            --border-hover: rgba(0, 229, 255, 0.35);
+            --glow: rgba(0, 229, 255, 0.3);
+            --safe: #10b981;
+            --unsafe: #ef4444;
+            --warning: #f59e0b;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(0, 255, 170, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Header */
         header {
-            background: var(--bg-secondary);
-            padding: 1.5rem 0;
-            border-bottom: 2px solid var(--accent);
-            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(10, 17, 32, 0.95) 100%);
+            padding: 1.25rem 0;
+            border-bottom: 2px solid var(--accent-primary);
+            margin-bottom: 1.5rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .header-content {
@@ -58,13 +92,29 @@
         }
 
         h1 {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            color: var(--accent);
-            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.5rem, 4vw, 2.25rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            position: relative;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--glow)); }
+            50% { filter: drop-shadow(0 0 20px var(--glow)); }
         }
 
         h1 span {
-            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-links {
@@ -74,151 +124,260 @@
         }
 
         .btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
+            padding: 0.6rem 1.25rem;
+            background: var(--bg-elevated);
             border: 1px solid var(--border);
             border-radius: 6px;
             color: var(--text-primary);
             text-decoration: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: 'Orbitron', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border-color: var(--accent);
+            background: rgba(0, 229, 255, 0.1);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--glow);
+            transform: translateY(-2px);
         }
 
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 229, 255, 0.15);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Search & Filter */
         .search-filter {
-            background: var(--bg-secondary);
-            padding: 1.5rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            padding: 2rem;
+            border-radius: 16px;
             margin-bottom: 2rem;
             border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .filter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         input, select {
             width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-card);
+            padding: 1rem;
+            background: var(--bg-elevated);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s ease;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--glow);
         }
 
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Filter Chips */
         .filter-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
 
         .chip {
-            padding: 0.4rem 1rem;
-            background: var(--bg-card);
+            padding: 0.5rem 1.25rem;
+            background: var(--bg-elevated);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 0.85rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .chip:hover, .chip.active {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: var(--bg-primary);
-            border-color: var(--accent);
+            border-color: transparent;
+            box-shadow: 0 4px 15px var(--glow);
+            transform: translateY(-2px);
         }
 
+        /* Table */
         .table-container {
             overflow-x: auto;
             background: var(--bg-secondary);
-            border-radius: 8px;
+            border-radius: 16px;
             border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 900px;
         }
 
         thead {
-            background: var(--bg-card);
+            background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
             position: sticky;
             top: 0;
         }
 
         th {
-            padding: 1rem;
+            padding: 1.25rem;
             text-align: left;
-            font-weight: 600;
-            color: var(--accent);
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            color: var(--accent-primary);
             border-bottom: 2px solid var(--border);
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
         }
 
         th:hover {
-            background: rgba(0, 212, 255, 0.1);
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-secondary);
         }
 
         td {
-            padding: 1rem;
+            padding: 1.25rem;
             border-bottom: 1px solid var(--border);
+            font-size: 1rem;
+        }
+
+        tr {
+            transition: all 0.3s ease;
         }
 
         tr:hover {
-            background: rgba(0, 212, 255, 0.05);
+            background: rgba(0, 229, 255, 0.05);
+            box-shadow: inset 0 0 0 1px var(--border-hover);
         }
 
+        .site-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+
+        /* Status Badges */
         .status-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', monospace;
         }
 
         .status-safe {
-            background: rgba(0, 255, 136, 0.2);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.3));
             color: var(--safe);
             border: 1px solid var(--safe);
         }
 
         .status-unsafe {
-            background: rgba(255, 68, 68, 0.2);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.3));
             color: var(--unsafe);
             border: 1px solid var(--unsafe);
         }
 
         .status-warning {
-            background: rgba(255, 170, 0, 0.2);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.3));
             color: var(--warning);
             border: 1px solid var(--warning);
         }
 
-        .site-name {
-            font-weight: 600;
-            color: var(--accent);
-        }
-
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -226,149 +385,518 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             z-index: 1000;
-            padding: 2rem;
-            overflow-y: auto;
+            justify-content: center;
+            align-items: center;
         }
 
         .modal.active {
             display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .modal-content {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 100%;
-            border: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 20px 60px rgba(0, 229, 255, 0.3);
             position: relative;
         }
 
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
-            width: 2rem;
-            height: 2rem;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 4px;
+            border-radius: 50%;
         }
 
-        .modal-close:hover {
-            background: var(--bg-card);
-            color: var(--text-primary);
+        .close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--unsafe);
         }
 
-        .info-section {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
+        .modal-body {
+            color: var(--text-secondary);
+            line-height: 1.8;
         }
 
-        .info-section h3 {
-            color: var(--accent);
+        .modal-body h3 {
+            color: var(--accent-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .modal-body ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body li {
             margin-bottom: 0.5rem;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* Tabs */
+        .tabs {
+            display: flex;
             gap: 1rem;
-            margin: 2rem 0;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
-        .stat-card {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 8px;
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: var(--bg-elevated);
             border: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .stat-label {
+            border-radius: 8px;
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
         }
 
-        footer {
-            margin-top: 3rem;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-primary);
+            border-color: transparent;
+            box-shadow: 0 4px 15px var(--glow);
         }
 
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+
+        /* Mobile Table Cards */
         @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
+            .table-container table {
+                min-width: auto;
+            }
+            
+            /* Hide table headers on mobile */
+            .table-container thead {
+                display: none;
+            }
+            
+            /* Make table rows display as cards */
+            .table-container tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1rem;
+                background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            }
+            
+            .table-container tbody tr:hover {
+                box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);
+            }
+            
+            /* Make table cells display as rows */
+            .table-container tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                text-align: right;
+            }
+            
+            .table-container tbody td:last-child {
+                border-bottom: none;
+            }
+            
+            /* Add labels before content */
+            .table-container tbody td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                font-family: 'Orbitron', monospace;
+                color: var(--accent-primary);
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                text-align: left;
+                flex-shrink: 0;
+                margin-right: 1rem;
+            }
+            
+            /* Adjust site name on mobile */
+            .site-name {
+                font-size: 0.95rem;
+                text-align: right;
+                flex: 1;
+            }
+            
+            /* Make badges and content wrap properly */
+            .table-container tbody td > * {
+                text-align: right;
+            }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 3rem 0 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-secondary), transparent);
+        }
+
+        .footer-content {
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .footer-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .footer-creator {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .footer-creator strong {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            margin: 1.5rem auto;
+            border-radius: 2px;
+        }
+
+        .footer-legal {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-legal a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .footer-legal a:hover {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .footer-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-badge:hover {
+            background: rgba(0, 229, 255, 0.2);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: 8px;
+            padding: 0.75rem;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transform: translateY(10px);
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--bg-elevated) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Icon Links */
+        .icon-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .icon-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            transition: left 0.5s;
+        }
+
+        .icon-link:hover::before {
+            left: 100%;
+        }
+
+        .icon-link:hover {
+            background: rgba(0, 229, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .icon-link svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .icon-link-about {
+            border-color: rgba(255, 184, 0, 0.3);
+        }
+
+        .icon-link-about:hover {
+            border-color: var(--warning);
+            color: var(--warning);
+            box-shadow: 0 0 20px rgba(255, 184, 0, 0.3);
+        }
+
+        .icon-link-time {
+            border-color: rgba(0, 255, 170, 0.3);
+        }
+
+        .icon-link-time:hover {
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+        }
+
+        .icon-link-calc {
+            border-color: rgba(0, 229, 255, 0.3);
+        }
+
+        .icon-link-calc:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .search-filter {
-                padding: 1rem;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .filter-grid {
                 grid-template-columns: 1fr;
             }
 
-            th, td {
-                padding: 0.75rem 0.5rem;
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            footer {
+                padding: 2rem 0 1.5rem;
+                margin-top: 3rem;
+            }
+            
+            .footer-title {
                 font-size: 0.9rem;
             }
-
-            .modal-content {
-                padding: 1.5rem;
-                margin: 1rem;
+            
+            .footer-creator {
+                font-size: 0.875rem;
             }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
+            
+            .footer-legal {
+                font-size: 0.8rem;
             }
         }
-
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
-        }
-
-        .tooltip {
-            position: relative;
-            cursor: help;
-        }
-
-        .tooltip:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 0.5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            white-space: nowrap;
-            font-size: 0.85rem;
-            z-index: 100;
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card {
+                padding: 1rem 1.25rem;
+            }
+            
+            .footer-title {
+                font-size: 0.85rem;
+            }
+            
+            .icon-links {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .icon-link {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -376,540 +904,391 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <h1><span>NEBULA</span>NEXUS</h1>
+                <h1>NEBULA <span>NEXUS</span></h1>
                 <div class="nav-links">
-                    <button class="btn" onclick="showModal('k162')">K162 Spawn</button>
-                    <button class="btn" onclick="showModal('terminology')">WH Terminology</button>
-                    <button class="btn" onclick="showModal('gasguide')">Gas Harvesting</button>
-                    <button class="btn" onclick="showModal('info')">About</button>
+                    <div class="tooltip">
+                        <button class="btn" onclick="window.open('https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8', '_blank')">
+                            <svg style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+                            </svg>
+                            ABOUT
+                        </button>
+                        <span class="tooltiptext">Project documentation, guides, and development roadmap</span>
+                    </div>
+                    <button class="btn" onclick="showModal('info')">INFO</button>
+                    <button class="btn" onclick="showModal('tips')">TIPS</button>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <div class="stats">
+        <!-- Stats -->
+        <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value" id="totalSites">-</div>
                 <div class="stat-label">Total Sites</div>
+                <div class="stat-value" id="totalSites">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="safeSites">-</div>
                 <div class="stat-label">Safe Sites</div>
+                <div class="stat-value" id="safeSites">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="unsafeSites">-</div>
                 <div class="stat-label">Unsafe Sites</div>
+                <div class="stat-value" id="unsafeSites">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Combat Anomalies</div>
+                <div class="stat-value" id="combatSites">0</div>
             </div>
         </div>
 
-        <div class="search-filter">
-            <div class="filter-grid">
-                <input type="text" id="searchInput" placeholder="🔍 Search site name...">
-                <select id="safetyFilter">
-                    <option value="">All Safety Levels</option>
-                    <option value="safe">Safe</option>
-                    <option value="unsafe">Unsafe</option>
-                    <option value="partial">Partial</option>
-                </select>
-                <select id="typeFilter">
-                    <option value="">All Types</option>
-                    <option value="data">Data Sites</option>
-                    <option value="relic">Relic Sites</option>
-                    <option value="gas">Gas Sites</option>
-                </select>
-                <select id="regionFilter">
-                    <option value="">All Regions</option>
-                    <optgroup label="🌟 Nullsec Regions">
-                        <option value="catch">Catch</option>
-                        <option value="delve">Delve</option>
-                        <option value="vale of the silent">Vale of the Silent</option>
-                        <option value="tenal">Tenal</option>
-                        <option value="fountain">Fountain</option>
-                        <option value="cloud ring">Cloud Ring</option>
-                        <option value="wicked creek">Wicked Creek</option>
-                        <option value="feythabolis">Feythabolis</option>
-                        <option value="omist">Omist</option>
-                        <option value="insmother">Insmother</option>
-                        <option value="tenerifis">Tenerifis</option>
-                        <option value="venal">Venal</option>
-                        <option value="pure blind">Pure Blind</option>
-                    </optgroup>
-                    <optgroup label="⚡ Lowsec/Empire">
-                        <option value="derelik">Derelik</option>
-                        <option value="aridia">Aridia</option>
-                        <option value="the forge">The Forge</option>
-                        <option value="lonetrek">Lonetrek</option>
-                        <option value="solitude">Solitude</option>
-                        <option value="placid">Placid</option>
-                        <option value="molden heath">Molden Heath</option>
-                        <option value="heimatar">Heimatar</option>
-                    </optgroup>
-                    <optgroup label="🌀 Wormhole">
-                        <option value="wormhole">Wormhole Space</option>
-                    </optgroup>
-                </select>
-                <select id="gasFilter">
-                    <option value="">All Gas Types</option>
-                    <option value="lime">Lime (Frentix)</option>
-                    <option value="malachite">Malachite (Mindflood)</option>
-                    <option value="amber">Amber (Blue Pill)</option>
-                    <option value="golden">Golden (Crash)</option>
-                    <option value="celadon">Celadon (Exile)</option>
-                    <option value="viridian">Viridian (Drop)</option>
-                    <option value="azure">Azure (Sooth Sayer)</option>
-                    <option value="vermillion">Vermillion (X-Instinct)</option>
-                    <option value="fullerite">Fullerite (C50-C540)</option>
-                </select>
-            </div>
-            <div class="filter-chips">
-                <div class="chip" onclick="quickFilter('safe')">✓ Safe Only</div>
-                <div class="chip" onclick="quickFilter('gas')">⛽ Gas Sites</div>
-                <div class="chip" onclick="quickFilter('relic')">📦 Relic Sites</div>
-                <div class="chip" onclick="quickFilter('data')">💾 Data Sites</div>
-                <div class="chip" onclick="quickFilter('wormhole')">🌀 Wormhole</div>
-                <div class="chip" onclick="quickFilter('mykoserocin')">🧪 Mykoserocin</div>
-                <div class="chip" onclick="quickFilter('fullerite')">💎 Fullerite</div>
-            </div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('exploration')">EXPLORATION</button>
+            <button class="tab-btn" onclick="switchTab('combat')">COMBAT ANOMALIES</button>
         </div>
 
-        <div class="table-container">
-            <table id="sitesTable">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable(0)">Site Name ▼</th>
-                        <th onclick="sortTable(1)">Type</th>
-                        <th onclick="sortTable(2)">Safety</th>
-                        <th onclick="sortTable(3)">Appears In</th>
-                        <th onclick="sortTable(4)">Notes</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <tr>
-                        <td colspan="5" class="loading">Loading exploration sites...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <!-- Exploration Tab -->
+        <div id="exploration-tab" class="tab-content active">
+            <!-- Search & Filter -->
+            <div class="search-filter">
+                <div class="filter-grid">
+                    <input type="text" id="searchInput" placeholder="Search sites...">
+                    <select id="safetyFilter">
+                        <option value="">All Safety Levels</option>
+                        <option value="safe">Safe</option>
+                        <option value="unsafe">Unsafe</option>
+                        <option value="warning">Warning</option>
+                    </select>
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="gas">Gas</option>
+                        <option value="relic">Relic</option>
+                        <option value="data">Data</option>
+                        <option value="wormhole">Wormhole</option>
+                    </select>
+                    <select id="regionFilter">
+                        <option value="">All Regions</option>
+                        <option value="high-sec">High-Sec</option>
+                        <option value="low-sec">Low-Sec</option>
+                        <option value="null-sec">Null-Sec</option>
+                        <option value="wormhole">Wormhole</option>
+                    </select>
+                    <select id="gasFilter">
+                        <option value="">All Gas Types</option>
+                        <option value="mykoserocin">Mykoserocin</option>
+                        <option value="fullerite">Fullerite</option>
+                        <option value="cytoserocin">Cytoserocin</option>
+                    </select>
+                </div>
 
-    <!-- Modal: K162 Info -->
-    <div id="k162Modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('k162')">&times;</button>
-            <h2 style="color: var(--accent); margin-bottom: 1rem;">K162 Spawn Mechanics</h2>
-            <div class="info-section">
-                <p style="margin-bottom: 1rem;">
-                    <strong>Hyperion expansion (Aug 2014):</strong><br>
-                    K162 appearance only on first jump (or after first warp and less than 15 hours remaining)
-                </p>
-                <p style="color: var(--text-secondary);">
-                    K162 is the "other side" of every wormhole type. It appears to others only when someone jumps through or warps to within 5000km of the wormhole, and the connection has less than 15 hours remaining.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Terminology -->
-    <div id="terminologyModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('terminology')">&times;</button>
-            <h2 style="color: var(--accent); margin-bottom: 1rem;">Common Wormhole Terminology</h2>
-            <div class="info-section" style="max-height: 60vh; overflow-y: auto;">
-                <p><strong>Anoikis</strong> - Lore name for wormhole space (j-space/w-space)</p>
-                <p><strong>Static</strong> - Repeatedly respawning WH connection in a j-space system</p>
-                <p><strong>EOL</strong> - End of life; WH with less than 4 hours lifetime left</p>
-                <p><strong>Destab</strong> - WH with less than 50% mass remaining (destabilized)</p>
-                <p><strong>Crit</strong> - WH with less than 10% mass remaining (critical)</p>
-                <p><strong>Frig hole</strong> - Smallest WH with ship size restriction up to Frigates/Destroyers</p>
-                <p><strong>Shattered</strong> - WH systems where all planets are shattered, no structures can be anchored</p>
-                <p><strong>Roll</strong> - Putting enough mass through a WH to collapse it</p>
-                <p><strong>Rage roll</strong> - Repeatedly rolling one's static connection searching for content</p>
-                <p><strong>Rolling battleship</strong> - Battleship fit with Higgs Anchor rig and propulsion for rolling WHs</p>
-                <p><strong>Rolling HIC</strong> - Heavy Interdiction Cruiser fit for rolling medium and crit WHs</p>
-                <p><strong>Cold pass</strong> - Jumping through WH with propulsion off (doesn't increase ship mass)</p>
-                <p><strong>Hot pass</strong> - Jumping through WH with propulsion on (increases ship mass)</p>
-                <p><strong>Eviction</strong> - Act of sieging, destroying and taking over an enemy WH system</p>
-                <p><strong>Hole control</strong> - Holding control of all incoming/outgoing WH connections during eviction</p>
-                <p><strong>Doorstop</strong> - Ship on outside of crit WH with enough mass to roll it instantly</p>
-                <p><strong>K162</strong> - Other side of every wormhole type</p>
-                <p><strong>Bob</strong> - Wormhole god. That is all.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Gas Harvesting Guide -->
-    <div id="gasguideModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('gasguide')">&times;</button>
-            <h2 style="color: var(--accent); margin-bottom: 1rem;">Gas Harvesting Guide</h2>
-            <div class="info-section" style="max-height: 60vh; overflow-y: auto;">
-                <h3>Types of Gas</h3>
-                
-                <p><strong>Mykoserocin</strong> - Used for synth combat boosters and neurolink enhancers (capital production)</p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li>Found in High, Low, and Nullsec</li>
-                    <li>No NPCs, no deadspace</li>
-                    <li>8 flavors: Lime, Malachite, Amber, Golden, Celadon, Viridian, Azure, Vermillion</li>
-                    <li>Volume: 10 m³ per unit</li>
-                </ul>
-
-                <p><strong>Cytoserocin</strong> - Used for stronger combat boosters</p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li>Concentrated in specific constellations in Nullsec/Lowsec</li>
-                    <li>Many sites are unstable - clouds explode dealing damage</li>
-                    <li>Some sites have NPCs or are in deadspace</li>
-                    <li>Same 8 flavors as Mykoserocin</li>
-                    <li>Volume: 10 m³ per unit</li>
-                </ul>
-
-                <p><strong>Fullerenes</strong> - Used for Tech III and Capital production</p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li>Only found in Wormhole space</li>
-                    <li>Sleepers spawn after 15-20 minutes (ninja harvest possible)</li>
-                    <li>Types: C50, C60, C70, C72, C84, C28, C32, C320, C540</li>
-                    <li>C320/C540 only in C5/C6 WHs - highest value</li>
-                    <li>⚠️ Ordinary Perimeter Reservoir has sentries on grid!</li>
-                    <li>Volume: 1-10 m³ per unit</li>
-                </ul>
-
-                <h3 style="margin-top: 1.5rem;">Equipment</h3>
-                
-                <p><strong>Ships:</strong></p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li><strong>Venture</strong> - Best for beginners, 2 gas scoops, 5,000 m³ gas hold</li>
-                    <li><strong>Prospect</strong> - Covert ops cloak, 10,000 m³ gas hold, same yield as Venture</li>
-                    <li>Mining Barges/Exhumers - Can use Gas Cloud Harvesters (not recommended)</li>
-                </ul>
-
-                <p><strong>Modules:</strong></p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li>Gas Cloud Scoop I - 20 m³/min (30s cycle)</li>
-                    <li>Gas Cloud Scoop II - 30 m³/min (40s cycle, needs Gas Cloud Harvesting V)</li>
-                    <li>Syndicate Gas Cloud Scoop - 40 m³/min (30s cycle, best yield)</li>
-                    <li>Range: 1.5 km (very short!)</li>
-                </ul>
-
-                <p><strong>Skills:</strong></p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li>Gas Cloud Harvesting - Required, 1 harvester per level (train to II or V)</li>
-                    <li>Mining Frigate - Reduces cycle time on Venture/Prospect</li>
-                    <li>Mining IV - Prerequisite for Gas Cloud Harvesting</li>
-                </ul>
-
-                <h3 style="margin-top: 1.5rem;">Tips & Safety</h3>
-                <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
-                    <li>🔍 Enable "Harvestable Clouds" in overview settings</li>
-                    <li>⏱️ Wormhole sites: Harvest for 15-20 min, then warp out before Sleepers spawn</li>
-                    <li>🛡️ Cytoserocin: Watch for cloud explosions - tank accordingly</li>
-                    <li>💰 Check market prices - C320/C540 are most valuable but dangerous</li>
-                    <li>👥 High-value WH sites: Consider fleet operations with haulers & scouts</li>
-                    <li>📦 Use mobile depot in Prospect for refitting</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: About -->
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('info')">&times;</button>
-            <h2 style="color: var(--accent); margin-bottom: 1rem;">About NEBULA NEXUS</h2>
-            <div class="info-section">
-                <p style="margin-bottom: 1rem;">
-                    <strong>NEBULA NEXUS</strong> is a comprehensive exploration and gas harvesting database designed for EVE Online capsuleers. 
-                    This tool provides essential safety information, gas compositions, and region-specific site data to help you navigate the dangers of New Eden.
-                </p>
-                
-                <h3 style="margin-top: 1.5rem;">Features</h3>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li>✅ <strong>150+ Exploration Sites</strong> - Complete database of Data, Relic, and Gas sites</li>
-                    <li>🗺️ <strong>Region-Specific Data</strong> - Accurate spawn locations for all gas types</li>
-                    <li>⚠️ <strong>Safety Indicators</strong> - Know which sites have NPCs, damage, or deadspace</li>
-                    <li>🔍 <strong>Advanced Filtering</strong> - Search by site name, type, region, gas flavor, and safety</li>
-                    <li>💎 <strong>Fullerite Guide</strong> - Complete wormhole gas site information (C50-C540)</li>
-                    <li>🧪 <strong>Cytoserocin & Mykoserocin</strong> - All nullsec and k-space gas nebulae mapped</li>
-                    <li>📱 <strong>Mobile Responsive</strong> - Works on all devices</li>
-                </ul>
-
-                <h3 style="margin-top: 1.5rem;">Data Sources</h3>
-                <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">
-                    This database aggregates information from multiple trusted sources:
-                </p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
-                    <li><a href="https://whtype.info/safe-explo" style="color: var(--accent);" target="_blank">whtype.info</a> - Wormhole database by Sothis Ast</li>
-                    <li><a href="https://wiki.eveuniversity.org/Gas_cloud_harvesting" style="color: var(--accent);" target="_blank">EVE University Wiki</a> - Gas harvesting comprehensive guide</li>
-                    <li><a href="https://wiki.signalcartel.space/Public:Exploration_Site_Safety_Guide" style="color: var(--accent);" target="_blank">Signal Cartel</a> - Explorer's Compendium safety data</li>
-                </ul>
-
-                <h3 style="margin-top: 1.5rem;">Developer</h3>
-                <p style="color: var(--text-secondary);">
-                    <strong style="color: var(--accent);">kingsyah</strong><br>
-                    Created for the EVE Online Indonesian community and all New Eden explorers<br>
-                    <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" style="color: var(--accent);" target="_blank">📋 Full Documentation</a>
-                </p>
-
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-secondary);">
-                    <p style="margin-bottom: 0.5rem;">All EVE Online related materials are property of CCP Games.</p>
-                    <p>EVE Online and all associated logos and designs are the intellectual property of CCP hf. All rights reserved worldwide.</p>
-                    <p style="margin-top: 0.5rem; font-style: italic;">This is a fan-made tool and is not affiliated with or endorsed by CCP Games.</p>
+                <div class="filter-chips">
+                    <div class="chip" onclick="quickFilter('safe')">SAFE SITES</div>
+                    <div class="chip" onclick="quickFilter('gas')">GAS SITES</div>
+                    <div class="chip" onclick="quickFilter('relic')">RELIC</div>
+                    <div class="chip" onclick="quickFilter('data')">DATA</div>
+                    <div class="chip" onclick="quickFilter('wormhole')">WORMHOLE</div>
+                    <div class="chip" onclick="quickFilter('mykoserocin')">MYKOSEROCIN</div>
+                    <div class="chip" onclick="quickFilter('fullerite')">FULLERITE</div>
                 </div>
             </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">SITE NAME ▼</th>
+                            <th onclick="sortTable(1)">TYPE ▼</th>
+                            <th onclick="sortTable(2)">SAFETY ▼</th>
+                            <th onclick="sortTable(3)">REGION ▼</th>
+                            <th onclick="sortTable(4)">NOTES ▼</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Combat Tab -->
+        <div id="combat-tab" class="tab-content">
+            <!-- Combat Search & Filter -->
+            <div class="search-filter">
+                <div class="filter-grid">
+                    <input type="text" id="combatSearchInput" placeholder="Search combat sites...">
+                    <select id="combatFactionFilter">
+                        <option value="">All Factions</option>
+                        <option value="angel">Angel Cartel</option>
+                        <option value="blood">Blood Raiders</option>
+                        <option value="guristas">Guristas</option>
+                        <option value="sansha">Sansha's Nation</option>
+                        <option value="serpentis">Serpentis</option>
+                        <option value="drone">Rogue Drones</option>
+                    </select>
+                    <select id="combatSecFilter">
+                        <option value="">All Security</option>
+                        <option value="high">High-Sec</option>
+                        <option value="low">Low-Sec</option>
+                        <option value="null">Null-Sec</option>
+                    </select>
+                    <select id="combatDifficultyFilter">
+                        <option value="">All Difficulties</option>
+                        <option value="1">Tier 1 (Easiest)</option>
+                        <option value="2-4">Tier 2-4</option>
+                        <option value="5-7">Tier 5-7</option>
+                        <option value="8-10">Tier 8-10 (Hardest)</option>
+                    </select>
+                </div>
+
+                <div class="filter-chips">
+                    <div class="chip" onclick="combatQuickFilter('angel')">ANGEL CARTEL</div>
+                    <div class="chip" onclick="combatQuickFilter('blood')">BLOOD RAIDERS</div>
+                    <div class="chip" onclick="combatQuickFilter('guristas')">GURISTAS</div>
+                    <div class="chip" onclick="combatQuickFilter('sansha')">SANSHA</div>
+                    <div class="chip" onclick="combatQuickFilter('serpentis')">SERPENTIS</div>
+                    <div class="chip" onclick="combatQuickFilter('highsec')">HIGH-SEC</div>
+                </div>
+            </div>
+
+            <!-- Combat Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortCombatTable(0)">SITE NAME ▼</th>
+                            <th onclick="sortCombatTable(1)">FACTION ▼</th>
+                            <th onclick="sortCombatTable(2)">DIFFICULTY ▼</th>
+                            <th onclick="sortCombatTable(3)">SECURITY ▼</th>
+                            <th onclick="sortCombatTable(4)">ESCALATION ▼</th>
+                            <th onclick="sortCombatTable(5)">NOTES ▼</th>
+                        </tr>
+                    </thead>
+                    <tbody id="combatTableBody">
+                        <!-- Combat data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: left; margin-bottom: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem;">⚡ NEBULA NEXUS</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Comprehensive exploration & gas harvesting database for EVE Online capsuleers. Navigate New Eden with confidence.</p>
-                    <p style="margin-top: 0.75rem; font-size: 0.85rem;">
-                        <strong style="color: var(--accent);">150+ Sites</strong> • 
-                        <strong style="color: var(--accent);">3 Gas Types</strong> • 
-                        <strong style="color: var(--accent);">Real-time Filtering</strong>
-                    </p>
-                </div>
-                
-                <div>
-                    <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem;">🛠️ Companion Tools</h3>
-                    <p style="font-size: 0.85rem; line-height: 1.8;">
-                        <a href="https://kingsyah.github.io/evetimeinfo/" style="color: var(--text-primary); text-decoration: none; display: block;" target="_blank">
-                            🕐 <strong>EVE Times Info</strong><br>
-                            <span style="color: var(--text-secondary); font-size: 0.8rem; margin-left: 1.2rem;">Server status, downtime tracker & world clocks</span>
-                        </a>
-                    </p>
-                    <p style="font-size: 0.85rem; line-height: 1.8; margin-top: 0.5rem;">
-                        <a href="https://kingsyah.github.io/KalkulatorYield/" style="color: var(--text-primary); text-decoration: none; display: block;" target="_blank">
-                            ⛏️ <strong>Mining Yield Calculator</strong><br>
-                            <span style="color: var(--text-secondary); font-size: 0.8rem; margin-left: 1.2rem;">Calculate mining efficiency & gas harvesting rates</span>
-                        </a>
-                    </p>
-                </div>
-                
-                <div>
-                    <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem;">📚 Resources</h3>
-                    <p style="font-size: 0.85rem; line-height: 1.8;">
-                        • <a href="https://whtype.info/safe-explo" style="color: var(--text-secondary); text-decoration: none;" target="_blank">whtype.info</a> - WH Database<br>
-                        • <a href="https://wiki.eveuniversity.org/Gas_cloud_harvesting" style="color: var(--text-secondary); text-decoration: none;" target="_blank">EVE Uni Wiki</a> - Gas Harvesting<br>
-                        • <a href="https://www.fuzzwork.co.uk/ore/gas.html" style="color: var(--text-secondary); text-decoration: none;" target="_blank">Fuzzwork</a> - Gas Price Calculator<br>
-                        • <a href="https://eve-scout.com/" style="color: var(--text-secondary); text-decoration: none;" target="_blank">Eve-Scout</a> - Thera & Turnur Mapping<br>
-                        • <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" style="color: var(--text-secondary); text-decoration: none;" target="_blank">Documentation</a> - Full Guide
-                    </p>
-                </div>
+        <div class="footer-content">
+            <div class="footer-title">Nebula Nexus</div>
+            <div class="footer-creator">
+                Forged in New Eden by <strong>KingSyah</strong><br>
+                Created for EVE Online Indonesian Community
             </div>
             
-            <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center;">
-                <p style="margin-bottom: 0.5rem; color: var(--text-primary);">
-                    Forged in New Eden by <strong style="color: var(--accent);">kingsyah</strong> 
-                    <span style="color: var(--text-secondary);">• Created for EVE Online Indonesian Community</span>
-                </p>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                    All EVE Online materials © <a href="https://www.ccpgames.com/" style="color: var(--accent); text-decoration: none;" target="_blank">CCP Games</a> • 
-                    EVE Online and all associated logos are trademarks of CCP hf.
-                </p>
-                <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic;">
-                    Fan-made tool • Not affiliated with or endorsed by CCP Games
-                </p>
+            <div class="footer-divider"></div>
+            
+            <div class="icon-links">
+                <a href="https://kingsyah.github.io/evetimeinfo/" target="_blank" rel="noopener" class="icon-link icon-link-time">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                    </svg>
+                    EVE Time Info
+                </a>
+                <a href="https://kingsyah.github.io/KalkulatorYield/" target="_blank" rel="noopener" class="icon-link icon-link-calc">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z"/>
+                    </svg>
+                    Kalkulator Yield
+                </a>
+                <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" target="_blank" rel="noopener" class="icon-link icon-link-about">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+                    </svg>
+                    Documentation
+                </a>
             </div>
+            
+            <div class="footer-divider"></div>
+            
+            <div class="footer-legal">
+                All EVE Online materials © <a href="https://www.ccpgames.com/" target="_blank" rel="noopener">CCP Games</a><br>
+                EVE Online and all associated logos and designs are trademarks or registered trademarks of CCP hf.<br>
+                All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features<br>
+                of the intellectual property relating to these trademarks are likewise the property of CCP hf.
+            </div>
+            
+            <div class="footer-badge">○ Fly Safe ○</div>
         </div>
     </footer>
 
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">NEBULA NEXUS INFO</h2>
+                <button class="close-btn" onclick="closeModal('info')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Welcome to NEBULA NEXUS - your comprehensive database for EVE Online exploration and combat sites.</p>
+                
+                <h3>EXPLORATION SITES</h3>
+                <ul>
+                    <li><strong>Gas Sites:</strong> Harvest valuable gas clouds for industry and boosters</li>
+                    <li><strong>Relic Sites:</strong> Hack containers for salvage and rare items</li>
+                    <li><strong>Data Sites:</strong> Hack data nodes for blueprints and materials</li>
+                    <li><strong>Safe Sites:</strong> No NPCs on grid - safe to hack</li>
+                    <li><strong>Unsafe Sites:</strong> NPCs present - combat required</li>
+                </ul>
+
+                <h3>COMBAT ANOMALIES</h3>
+                <ul>
+                    <li><strong>Anomalies:</strong> Appear automatically in probe scanner</li>
+                    <li><strong>Difficulty Tiers:</strong> From 1 (easiest) to 10 (hardest)</li>
+                    <li><strong>Faction Sites:</strong> Different pirate factions per region</li>
+                    <li><strong>Escalations:</strong> Some sites can escalate to DED complexes</li>
+                    <li><strong>Commander Spawns:</strong> Rare faction spawns with valuable loot</li>
+                </ul>
+
+                <h3>DATA SOURCE</h3>
+                <p>Information compiled from EVE University Wiki and player community data.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Modal -->
+    <div id="tipsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">EXPLORATION TIPS</h2>
+                <button class="close-btn" onclick="closeModal('tips')">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>GAS HUFFING</h3>
+                <ul>
+                    <li>Wormhole gas sites spawn Sleepers after 15-20 minutes</li>
+                    <li>Bring a Mobile Tractor Unit for C320/C540 clouds</li>
+                    <li>Ninja huffing: warp in, huff, warp out before Sleepers arrive</li>
+                </ul>
+
+                <h3>RELIC & DATA SITES</h3>
+                <ul>
+                    <li>Null-sec sites have the best loot</li>
+                    <li>Use Археология/Data analyzers with coherence implants</li>
+                    <li>Ghost sites have timers - hack fast or get blown up</li>
+                    <li>Always check d-scan for other players</li>
+                </ul>
+
+                <h3>COMBAT ANOMALIES</h3>
+                <ul>
+                    <li>Commander spawns (Dread, Dark Blood, True, etc.) drop faction loot</li>
+                    <li>Watch for escalation messages - they can be very profitable</li>
+                    <li>High-sec sites can be done in T1 cruisers</li>
+                    <li>Low/null-sec sites require better ships and fits</li>
+                    <li>Some sites have triggers - learn spawn patterns</li>
+                </ul>
+
+                <h3>SAFETY</h3>
+                <ul>
+                    <li>Always align to a celestial while hacking</li>
+                    <li>Fit a cloak on your exploration ship</li>
+                    <li>Use bookmarks for safe spots</li>
+                    <li>In null-sec, assume every system has hostiles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Comprehensive exploration sites data
+        // Exploration Sites Data
         const explorationSites = [
-            // === MYKOSEROCIN GAS SITES (K-SPACE - HISEC/LOWSEC/NULLSEC) ===
-            // Lime/Frentix
-            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
-            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Curse", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
-            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Derelik", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
-            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
-            { name: "Sister Nebula", type: "Gas", safety: "safe", region: "Wicked Creek", notes: "Lime Mykoserocin | 2,000 units | No NPCs", gas: "Lime", units: 2000 },
-            { name: "Helix Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Lime Mykoserocin | 6,000 units | No NPCs", gas: "Lime", units: 6000 },
-            { name: "Helix Nebula", type: "Gas", safety: "safe", region: "Curse", notes: "Lime Mykoserocin | 6,000 units | No NPCs", gas: "Lime", units: 6000 },
+            // GAS SITES - K-Space (High-Sec, Low-Sec, Null-Sec)
+            { name: "Barren Perimeter Reservoir", type: "Gas", safety: "safe", region: "High-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Minor Perimeter Reservoir", type: "Gas", safety: "safe", region: "High-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Ordinary Perimeter Reservoir", type: "Gas", safety: "safe", region: "High-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Sizeable Perimeter Reservoir", type: "Gas", safety: "safe", region: "High-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Token Perimeter Reservoir", type: "Gas", safety: "safe", region: "High-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
             
-            // Malachite/Mindflood
-            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Malachite Mykoserocin | 2,000 units | No NPCs", gas: "Malachite", units: 2000 },
-            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Insmother", notes: "Malachite Mykoserocin | 2,000 units | No NPCs", gas: "Malachite", units: 2000 },
-            { name: "Wild Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Malachite Mykoserocin | 2,000 units | No NPCs", gas: "Malachite", units: 2000 },
-            { name: "Blackeye Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Malachite Mykoserocin | 6,000 units | No NPCs", gas: "Malachite", units: 6000 },
-            { name: "Blackeye Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Malachite Mykoserocin | 6,000 units | No NPCs", gas: "Malachite", units: 6000 },
+            { name: "Barren Frontier Reservoir", type: "Gas", safety: "safe", region: "Low-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Minor Frontier Reservoir", type: "Gas", safety: "safe", region: "Low-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Ordinary Frontier Reservoir", type: "Gas", safety: "safe", region: "Low-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Sizeable Frontier Reservoir", type: "Gas", safety: "safe", region: "Low-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
+            { name: "Token Frontier Reservoir", type: "Gas", safety: "safe", region: "Low-Sec", notes: "Mykoserocin | Safe", gas: "mykoserocin" },
             
-            // Amber/Blue Pill
-            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Black Rise", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
-            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
-            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "Outer Passage", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
-            { name: "Sunspark Nebula", type: "Gas", safety: "safe", region: "The Spire", notes: "Amber Mykoserocin | 2,000 units | No NPCs", gas: "Amber", units: 2000 },
-            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "Black Rise", notes: "Amber Mykoserocin | 6,000 units | No NPCs", gas: "Amber", units: 6000 },
-            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "The Forge", notes: "Amber Mykoserocin | 6,000 units | No NPCs", gas: "Amber", units: 6000 },
-            { name: "Diablo Nebula", type: "Gas", safety: "safe", region: "Vale of the Silent", notes: "Amber Mykoserocin | 6,000 units | No NPCs", gas: "Amber", units: 6000 },
+            { name: "Vast Frontier Reservoir", type: "Gas", safety: "safe", region: "Null-Sec", notes: "Cytoserocin | Safe", gas: "cytoserocin" },
+            { name: "Bountiful Frontier Reservoir", type: "Gas", safety: "safe", region: "Null-Sec", notes: "Cytoserocin | Safe", gas: "cytoserocin" },
             
-            // Golden/Crash
-            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Golden Mykoserocin | 2,000 units | No NPCs", gas: "Golden", units: 2000 },
-            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "Perrigen Falls", notes: "Golden Mykoserocin | 2,000 units | No NPCs", gas: "Golden", units: 2000 },
-            { name: "Smoking Nebula", type: "Gas", safety: "safe", region: "The Spire", notes: "Golden Mykoserocin | 2,000 units | No NPCs", gas: "Golden", units: 2000 },
-            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Golden Mykoserocin | 6,000 units | No NPCs", gas: "Golden", units: 6000 },
-            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Malpais", notes: "Golden Mykoserocin | 6,000 units | No NPCs", gas: "Golden", units: 6000 },
-            { name: "Ring Nebula", type: "Gas", safety: "safe", region: "Perrigen Falls", notes: "Golden Mykoserocin | 6,000 units | No NPCs", gas: "Golden", units: 6000 },
+            // GAS SITES - Wormholes (C1-C6) - SAFE (No Sleepers on spawn)
+            { name: "Barren Perimeter Deposit", type: "Gas", safety: "safe", region: "Wormhole C1", notes: "C50 Mykoserocin | Sleepers spawn after 15-20min", gas: "fullerite c50" },
+            { name: "Token Perimeter Deposit", type: "Gas", safety: "safe", region: "Wormhole C1", notes: "C50 Mykoserocin | Sleepers spawn after 15-20min", gas: "fullerite c50" },
+            { name: "Minor Perimeter Deposit", type: "Gas", safety: "safe", region: "Wormhole C1", notes: "C50 Mykoserocin | Sleepers spawn after 15-20min", gas: "fullerite c50" },
+            { name: "Ordinary Perimeter Deposit", type: "Gas", safety: "safe", region: "Wormhole C1", notes: "C50 Mykoserocin | Sleepers spawn after 15-20min", gas: "fullerite c50" },
+            { name: "Sizeable Perimeter Deposit", type: "Gas", safety: "safe", region: "Wormhole C1", notes: "C72 Mykoserocin | Sleepers spawn after 15-20min", gas: "fullerite c72" },
             
-            // Celadon/Exile
-            { name: "Calabash Nebula", type: "Gas", safety: "safe", region: "Domain", notes: "Celadon Mykoserocin | 2,000 units | No NPCs", gas: "Celadon", units: 2000 },
-            { name: "Calabash Nebula", type: "Gas", safety: "safe", region: "Fountain", notes: "Celadon Mykoserocin | 2,000 units | No NPCs", gas: "Celadon", units: 2000 },
-            { name: "Glass Nebula", type: "Gas", safety: "safe", region: "Domain", notes: "Celadon Mykoserocin | 6,000 units | No NPCs", gas: "Celadon", units: 6000 },
-            { name: "Glass Nebula", type: "Gas", safety: "safe", region: "Pure Blind", notes: "Celadon Mykoserocin | 6,000 units | No NPCs", gas: "Celadon", units: 6000 },
+            { name: "Barren Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C2", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Token Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C2", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Minor Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C2", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Ordinary Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C2", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Sizeable Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C2", notes: "C50/C72 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c50 c72" },
             
-            // Viridian/Drop
-            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Essence", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
-            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Fountain", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
-            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Tenal", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
-            { name: "Bright Nebula", type: "Gas", safety: "safe", region: "Venal", notes: "Viridian Mykoserocin | 2,000 units | No NPCs", gas: "Viridian", units: 2000 },
-            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Essence", notes: "Viridian Mykoserocin | 6,000 units | No NPCs", gas: "Viridian", units: 6000 },
-            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Pure Blind", notes: "Viridian Mykoserocin | 6,000 units | No NPCs", gas: "Viridian", units: 6000 },
-            { name: "Sparking Nebula", type: "Gas", safety: "safe", region: "Tenal", notes: "Viridian Mykoserocin | 6,000 units | No NPCs", gas: "Viridian", units: 6000 },
+            { name: "Barren Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C3", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Token Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C3", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Minor Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C3", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Ordinary Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C3", notes: "C28/C32 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c28 c32" },
+            { name: "Sizeable Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C3", notes: "C50/C72 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c50 c72" },
             
-            // Azure/Sooth Sayer
-            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Curse", notes: "Azure Mykoserocin | 2,000 units | No NPCs", gas: "Azure", units: 2000 },
-            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Azure Mykoserocin | 2,000 units | No NPCs", gas: "Azure", units: 2000 },
-            { name: "Ghost Nebula", type: "Gas", safety: "safe", region: "Molden Heath", notes: "Azure Mykoserocin | 2,000 units | No NPCs", gas: "Azure", units: 2000 },
-            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Azure Mykoserocin | 6,000 units | No NPCs", gas: "Azure", units: 6000 },
-            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Insmother", notes: "Azure Mykoserocin | 6,000 units | No NPCs", gas: "Azure", units: 6000 },
-            { name: "Eagle Nebula", type: "Gas", safety: "safe", region: "Tenerifis", notes: "Azure Mykoserocin | 6,000 units | No NPCs", gas: "Azure", units: 6000 },
+            { name: "Barren Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C5", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Token Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C5", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Minor Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C5", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Ordinary Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C5", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Sizeable Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C5", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
             
-            // Vermillion/X-Instinct
-            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
-            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Great Wildlands", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
-            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Insmother", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
-            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Omist", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
-            { name: "Flame Nebula", type: "Gas", safety: "safe", region: "Tenerifis", notes: "Vermillion Mykoserocin | 2,000 units | No NPCs", gas: "Vermillion", units: 2000 },
-            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Vermillion Mykoserocin | 6,000 units | No NPCs", gas: "Vermillion", units: 6000 },
-            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Immensea", notes: "Vermillion Mykoserocin | 6,000 units | No NPCs", gas: "Vermillion", units: 6000 },
-            { name: "Pipe Nebula", type: "Gas", safety: "safe", region: "Tenerifis", notes: "Vermillion Mykoserocin | 6,000 units | No NPCs", gas: "Vermillion", units: 6000 },
-
-            // === CYTOSEROCIN GAS SITES (NULLSEC/LOWSEC) ===
-            // Lime/Frentix - Catch/Derelik
-            { name: "Emerald Nebula", type: "Gas", safety: "safe", region: "Derelik", notes: "Lime Cytoserocin | 500 units | Lowsec | No NPCs | No damage", gas: "Lime", units: 500 },
-            { name: "Cheetah Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 1,000 units | Nullsec | No NPCs | 1000 thermal dmg", gas: "Lime", units: 1000 },
-            { name: "Duo Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 3,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Lime", units: 3000 },
-            { name: "Leopard Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 18,000 units | Nullsec | NPCs | 1400 explosive dmg", gas: "Lime", units: 18000 },
-            { name: "Rimy Nebula", type: "Gas", safety: "unsafe", region: "Catch", notes: "Lime Cytoserocin | 3,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Lime", units: 3000 },
+            { name: "Barren Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C6", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Token Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C6", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Minor Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C6", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Ordinary Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C6", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
+            { name: "Sizeable Frontier Deposit", type: "Gas", safety: "safe", region: "Wormhole C6", notes: "C320/C540 Fullerites | Sleepers spawn after 15-20min", gas: "fullerite c320 c540" },
             
-            // Malachite/Mindflood - Delve/Aridia
-            { name: "Crimson Nebula", type: "Gas", safety: "safe", region: "Aridia", notes: "Malachite Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Malachite", units: 1000 },
-            { name: "Cobra Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 500 units | Nullsec | No NPCs | 800 EM + 800 thermal", gas: "Malachite", units: 500 },
-            { name: "Crab Spider Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Malachite", units: 2000 },
-            { name: "Hazy Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 18,000 units | Nullsec | NPCs | 800 EM + 700 thermal", gas: "Malachite", units: 18000 },
-            { name: "Hidden Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 6,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Malachite", units: 6000 },
-            { name: "Whirling Nebula", type: "Gas", safety: "unsafe", region: "Delve", notes: "Malachite Cytoserocin | 6,000 units | Nullsec | NPCs | Deadspace | 1000 EM + 1000 thermal", gas: "Malachite", units: 6000 },
+            // GAS SITES - Wormholes UNSAFE (Instrumental Core Reservoir - Sleepers on grid)
+            { name: "Instrumental Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5-C6", notes: "C320/C540 | Sleepers on grid from spawn", gas: "fullerite c320 c540" },
+            { name: "Vital Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5-C6", notes: "C320/C540 | Sleepers on grid from spawn", gas: "fullerite c320 c540" },
             
-            // Amber/Blue Pill - Vale of the Silent/The Forge
-            { name: "Bandit Nebula", type: "Gas", safety: "safe", region: "The Forge", notes: "Amber Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Amber", units: 1000 },
-            { name: "Fluttering Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 500 units | Nullsec | No NPCs | 1000 thermal", gas: "Amber", units: 500 },
-            { name: "Rocky Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 832 units | Nullsec | No NPCs | 2500 thermal", gas: "Amber", units: 832 },
-            { name: "Dewy Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Amber", units: 6000 },
-            { name: "Foggy Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Amber", units: 6000 },
-            { name: "Shimmering Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 18,000 units | Nullsec | NPCs | 1400 thermal", gas: "Amber", units: 18000 },
-            { name: "Spacious Nebula", type: "Gas", safety: "unsafe", region: "Vale of the Silent", notes: "Amber Cytoserocin | 6,000 units | Nullsec | No NPCs | Mixed damage", gas: "Amber", units: 6000 },
+            // RELIC SITES - SAFE (No NPCs - K-Space and Wormhole pirate faction sites)
+            { name: "Ruined Sansha Crystal Quarry", type: "Relic", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Sansha Monument Site", type: "Relic", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Sansha Science Outpost", type: "Relic", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Sansha Temple Site", type: "Relic", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
             
-            // Golden/Crash - Tenal/Lonetrek
-            { name: "Profiteer Nebula", type: "Gas", safety: "safe", region: "Lonetrek", notes: "Golden Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Golden", units: 1000 },
-            { name: "Moth Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Golden", units: 2000 },
-            { name: "Swarm Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 2,000 units | Nullsec | No NPCs | Deadspace | 1000 thermal", gas: "Golden", units: 2000 },
-            { name: "Lion Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 6,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Golden", units: 6000 },
-            { name: "Shiny Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Golden", units: 6000 },
-            { name: "Gaseous Nebula", type: "Gas", safety: "unsafe", region: "Tenal", notes: "Golden Cytoserocin | 18,000 units | Nullsec | NPCs | 700 EM + 700 thermal", gas: "Golden", units: 18000 },
+            { name: "Ruined Guristas Crystal Quarry", type: "Relic", safety: "safe", region: "Null-Sec Guristas", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Guristas Monument Site", type: "Relic", safety: "safe", region: "Null-Sec Guristas", notes: "No NPCs | Safe to hack" },
             
-            // Celadon/Exile - Fountain/Solitude
-            { name: "Phoenix Nebula", type: "Gas", safety: "safe", region: "Solitude", notes: "Celadon Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Celadon", units: 1000 },
-            { name: "Flowing Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 2,000 units | Nullsec | No NPCs | 1000 thermal", gas: "Celadon", units: 2000 },
-            { name: "Thick Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 1,000 units | Nullsec | NPCs", gas: "Celadon", units: 1000 },
-            { name: "Diamond Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Celadon", units: 6000 },
-            { name: "Massive Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 14,224 units | Nullsec | NPCs | 800 thermal", gas: "Celadon", units: 14224 },
-            { name: "Peacock Nebula", type: "Gas", safety: "unsafe", region: "Fountain", notes: "Celadon Cytoserocin | 6,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Celadon", units: 6000 },
+            { name: "Ruined Blood Crystal Quarry", type: "Relic", safety: "safe", region: "Null-Sec Blood", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Blood Monument Site", type: "Relic", safety: "safe", region: "Null-Sec Blood", notes: "No NPCs | Safe to hack" },
             
-            // Viridian/Drop - Cloud Ring/Placid
-            { name: "Forgotten Nebula", type: "Gas", safety: "safe", region: "Placid", notes: "Viridian Cytoserocin | 1,000 units | Lowsec | No NPCs | No damage", gas: "Viridian", units: 1000 },
-            { name: "Frosty Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Viridian", units: 2000 },
-            { name: "Goose Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 2,000 units | Nullsec | No NPCs | 1000 thermal", gas: "Viridian", units: 2000 },
-            { name: "Icy Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Viridian", units: 6000 },
-            { name: "Pale Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 3,000+ units | Nullsec | No NPCs | 1000 thermal", gas: "Viridian", units: 3000 },
-            { name: "Polar Bear Nebula", type: "Gas", safety: "unsafe", region: "Cloud Ring", notes: "Viridian Cytoserocin | 18,000 units | Nullsec | NPCs | 800 thermal", gas: "Viridian", units: 18000 },
+            { name: "Ruined Serpentis Crystal Quarry", type: "Relic", safety: "safe", region: "Null-Sec Serpentis", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Serpentis Monument Site", type: "Relic", safety: "safe", region: "Null-Sec Serpentis", notes: "No NPCs | Safe to hack" },
             
-            // Azure/Sooth Sayer - Wicked Creek/Molden Heath
-            { name: "Rapture Nebula", type: "Gas", safety: "safe", region: "Molden Heath", notes: "Azure Cytoserocin | 1,400 units | Lowsec | No NPCs | No damage", gas: "Azure", units: 1400 },
-            { name: "Crystal Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 2,000 units | Nullsec | No NPCs | 400 thermal", gas: "Azure", units: 2000 },
-            { name: "Snowy Owl Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 2,000 units | Nullsec | NPCs | No damage", gas: "Azure", units: 2000 },
-            { name: "Arctic Fox Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 9,000 units | Nullsec | NPCs | 700 EM + 700 thermal", gas: "Azure", units: 9000 },
-            { name: "Glistening Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Azure", units: 6000 },
-            { name: "Murky Nebula", type: "Gas", safety: "unsafe", region: "Wicked Creek", notes: "Azure Cytoserocin | 3,000 units | Nullsec | No NPCs | 1000 EM + 1000 thermal", gas: "Azure", units: 3000 },
+            { name: "Ruined Angel Crystal Quarry", type: "Relic", safety: "safe", region: "Null-Sec Angel", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Angel Monument Site", type: "Relic", safety: "safe", region: "Null-Sec Angel", notes: "No NPCs | Safe to hack" },
             
-            // Vermillion/X-Instinct - Feythabolis/Heimatar
-            { name: "Saintly Nebula", type: "Gas", safety: "safe", region: "Heimatar", notes: "Vermillion Cytoserocin | 500 units | Lowsec | No NPCs", gas: "Vermillion", units: 500 },
-            { name: "Boisterous Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 2,000 units | Nullsec | No NPCs | 1000 thermal", gas: "Vermillion", units: 2000 },
-            { name: "Cardinal Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 6,000 units | Nullsec | NPCs | 1000 EM + 1000 thermal", gas: "Vermillion", units: 6000 },
-            { name: "Red Dragonfly Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 18,000 units | Nullsec | NPCs | 700 EM + 700 thermal", gas: "Vermillion", units: 18000 },
-            { name: "Wispy Nebula", type: "Gas", safety: "unsafe", region: "Feythabolis", notes: "Vermillion Cytoserocin | 6,000 units | Nullsec | No NPCs | Deadspace | 1000 EM + 1000 thermal", gas: "Vermillion", units: 6000 },
-
-            // === FULLERITE GAS SITES (WORMHOLE SPACE) ===
-            { name: "Barren Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C50 & C84 | Sleepers spawn ~15-20min | Low value", gas: "C50/C84", units: "Varies" },
-            { name: "Token Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C60 & C70 | Sleepers spawn ~15-20min | Low-Mid value", gas: "C60/C70", units: "Varies" },
-            { name: "Minor Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C70 & C72 | Sleepers spawn ~15-20min | Mid value", gas: "C70/C72", units: "Varies" },
-            { name: "Ordinary Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C72 & C84 | 5 Sentries on grid immediately! | Mid value", gas: "C72/C84", units: "Varies" },
-            { name: "Sizable Perimeter Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C84 & C50 | Sleepers spawn ~15-20min | Low value", gas: "C84/C50", units: "Varies" },
-            { name: "Bountiful Frontier Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C28 & C32 | Sleepers spawn ~15-20min | Mid value", gas: "C28/C32", units: "Varies" },
-            { name: "Vast Frontier Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole", notes: "C32 & C28 | Sleepers spawn ~15-20min | Low-Mid value", gas: "C32/C28", units: "Varies" },
-            { name: "Instrumental Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5/C6", notes: "C320 & C540 | Sleepers spawn ~15-20min | HIGH VALUE", gas: "C320/C540", units: "Varies" },
-            { name: "Vital Core Reservoir", type: "Gas", safety: "unsafe", region: "Wormhole C5/C6", notes: "C540 & C320 | Sleepers spawn ~15-20min | HIGH VALUE", gas: "C540/C320", units: "Varies" },
-
-            // === RELIC & DATA SITES ===
+            { name: "Central Sansha Relic Site", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Blood Relic Site", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Guristas Relic Site", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Serpentis Relic Site", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Central Angel Relic Site", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
             
-            // SAFE Pirate Sites (K-Space - All Security)
-            { name: "Crumbling Sansha Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Sansha space" },
-            { name: "Decayed Sansha Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Sansha space" },
-            { name: "Ruined Sansha Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Sansha space" },
+            // DATA SITES - SAFE (No NPCs - K-Space and Wormhole pirate faction sites)
+            { name: "Ruined Sansha Mainframe", type: "Data", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Sansha Regional HQ", type: "Data", safety: "safe", region: "Null-Sec Sansha", notes: "No NPCs | Safe to hack" },
             
-            { name: "Crumbling Blood Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Blood Raider space" },
-            { name: "Decayed Blood Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Blood Raider space" },
-            { name: "Ruined Blood Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Blood Raider space" },
+            { name: "Ruined Guristas Mainframe", type: "Data", safety: "safe", region: "Null-Sec Guristas", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Guristas Regional HQ", type: "Data", safety: "safe", region: "Null-Sec Guristas", notes: "No NPCs | Safe to hack" },
             
-            { name: "Crumbling Guristas Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Guristas space" },
-            { name: "Decayed Guristas Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Guristas space" },
-            { name: "Ruined Guristas Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Guristas space" },
+            { name: "Ruined Blood Mainframe", type: "Data", safety: "safe", region: "Null-Sec Blood", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Blood Regional HQ", type: "Data", safety: "safe", region: "Null-Sec Blood", notes: "No NPCs | Safe to hack" },
             
-            { name: "Crumbling Serpentis Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Serpentis space" },
-            { name: "Decayed Serpentis Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Serpentis space" },
-            { name: "Ruined Serpentis Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Serpentis space" },
+            { name: "Ruined Serpentis Mainframe", type: "Data", safety: "safe", region: "Null-Sec Serpentis", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Serpentis Regional HQ", type: "Data", safety: "safe", region: "Null-Sec Serpentis", notes: "No NPCs | Safe to hack" },
             
-            { name: "Crumbling Angel Monument", type: "Relic", safety: "safe", region: "High-Sec", notes: "No NPCs | Angel space" },
-            { name: "Decayed Angel Monument", type: "Relic", safety: "safe", region: "Low-Sec", notes: "No NPCs | Angel space" },
-            { name: "Ruined Angel Monument", type: "Relic", safety: "safe", region: "Null-Sec", notes: "No NPCs | Angel space" },
-            
-            // SAFE Pirate Data Sites (K-Space)
-            { name: "Local Sansha Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Sansha space" },
-            { name: "Regional Sansha Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Sansha space" },
-            { name: "Central Sansha Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Sansha space" },
-            
-            { name: "Local Blood Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Blood Raider space" },
-            { name: "Regional Blood Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Blood Raider space" },
-            { name: "Central Blood Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Blood Raider space" },
-            
-            { name: "Local Guristas Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Guristas space" },
-            { name: "Regional Guristas Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Guristas space" },
-            { name: "Central Guristas Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Guristas space" },
-            
-            { name: "Local Serpentis Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Serpentis space" },
-            { name: "Regional Serpentis Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Serpentis space" },
-            { name: "Central Serpentis Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Serpentis space" },
-            
-            { name: "Local Angel Data Site", type: "Data", safety: "safe", region: "High-Sec", notes: "No NPCs | Angel space" },
-            { name: "Regional Angel Data Site", type: "Data", safety: "safe", region: "Low-Sec", notes: "No NPCs | Angel space" },
-            { name: "Central Angel Data Site", type: "Data", safety: "safe", region: "Null-Sec", notes: "No NPCs | Angel space" },
-            
-            // SAFE Wormhole Sites (C1-C3 ONLY!)
-            { name: "Ruined Sansha Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
-            { name: "Ruined Blood Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
-            { name: "Ruined Guristas Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
-            { name: "Ruined Serpentis Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
-            { name: "Ruined Angel Monument", type: "Relic", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Angel Mainframe", type: "Data", safety: "safe", region: "Null-Sec Angel", notes: "No NPCs | Safe to hack" },
+            { name: "Ruined Angel Regional HQ", type: "Data", safety: "safe", region: "Null-Sec Angel", notes: "No NPCs | Safe to hack" },
             
             { name: "Central Sansha Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
             { name: "Central Blood Data Site", type: "Data", safety: "safe", region: "Wormhole C1-C3", notes: "No NPCs | Safe to hack" },
@@ -951,17 +1330,123 @@
             { name: "Silent Battleground", type: "Data/Relic", safety: "safe", region: "Shattered WH", notes: "20 cans | No NPCs | Timer despawn | Very rare" },
         ];
 
+        // Combat Anomalies Data (from EVE University Wiki)
+        const combatAnomalies = [
+            // TIER 1 - High-Sec & Low-Sec
+            { name: "Angel Hideaway", faction: "Angel Cartel", difficulty: 1, security: "High/Low", escalation: "None", notes: "Entry-level Angel site" },
+            { name: "Blood Hideaway", faction: "Blood Raiders", difficulty: 1, security: "High/Low", escalation: "None", notes: "Entry-level Blood site" },
+            { name: "Guristas Hideaway", faction: "Guristas", difficulty: 1, security: "High/Low", escalation: "4/10 Scout Outpost", notes: "Can escalate to DED 4/10" },
+            { name: "Sansha Hideaway", faction: "Sansha's Nation", difficulty: 1, security: "High/Low", escalation: "3/10 Command Relay", notes: "Can escalate to DED 3/10" },
+            { name: "Serpentis Hideaway", faction: "Serpentis", difficulty: 1, security: "High/Low", escalation: "3/10 Narcotic Warehouse", notes: "Can escalate to DED 3/10" },
+            { name: "Drone Cluster", faction: "Rogue Drones", difficulty: 1, security: "High/Low", escalation: "None", notes: "Rogue Drone site" },
+            
+            // TIER 2 - Burrows (Low reward, skip these)
+            { name: "Angel Burrow", faction: "Angel Cartel", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
+            { name: "Blood Burrow", faction: "Blood Raiders", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
+            { name: "Guristas Burrow", faction: "Guristas", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
+            { name: "Sansha Burrow", faction: "Sansha's Nation", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
+            { name: "Serpentis Burrow", faction: "Serpentis", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
+            { name: "Drone Collection", faction: "Rogue Drones", difficulty: 2, security: "Low", escalation: "None", notes: "Low value - skip" },
+            
+            // TIER 3 - Refuge
+            { name: "Angel Refuge", faction: "Angel Cartel", difficulty: 3, security: "High/Low", escalation: "5/10 Red Light District", notes: "Medium difficulty" },
+            { name: "Blood Refuge", faction: "Blood Raiders", difficulty: 3, security: "High/Low", escalation: "4/10 Mul-Zatah Monastery", notes: "Medium difficulty" },
+            { name: "Guristas Refuge", faction: "Guristas", difficulty: 3, security: "High/Low", escalation: "4/10 Scout Outpost", notes: "Medium difficulty" },
+            { name: "Sansha Refuge", faction: "Sansha's Nation", difficulty: 3, security: "High/Low", escalation: "3/10 Command Relay", notes: "Medium difficulty" },
+            { name: "Serpentis Refuge", faction: "Serpentis", difficulty: 3, security: "High/Low", escalation: "3/10 Narcotic Warehouse", notes: "Medium difficulty" },
+            { name: "Drone Assembly", faction: "Rogue Drones", difficulty: 3, security: "High/Low", escalation: "3/10 Asteroid Infestation", notes: "Medium difficulty" },
+            
+            // TIER 4 - Den
+            { name: "Angel Den", faction: "Angel Cartel", difficulty: 4, security: "High/Low", escalation: "5/10 Red Light District", notes: "Good for escalations" },
+            { name: "Blood Den", faction: "Blood Raiders", difficulty: 4, security: "High/Low", escalation: "5/10 Psychotropics Depot", notes: "Good for escalations" },
+            { name: "Guristas Den", faction: "Guristas", difficulty: 4, security: "High/Low", escalation: "5/10 Hallucinogen Waypoint", notes: "Good for escalations" },
+            { name: "Sansha Den", faction: "Sansha's Nation", difficulty: 4, security: "High/Low", escalation: "5/10 Neural Paralytic", notes: "Good for escalations" },
+            { name: "Serpentis Den", faction: "Serpentis", difficulty: 4, security: "High/Low", escalation: "5/10 Hydroponics Site", notes: "Good for escalations" },
+            { name: "Drone Gathering", faction: "Rogue Drones", difficulty: 4, security: "High/Low", escalation: "3/10 Asteroid Infestation", notes: "Medium difficulty" },
+            
+            // TIER 5 - Yard (Low-Sec)
+            { name: "Angel Yard", faction: "Angel Cartel", difficulty: 5, security: "Low", escalation: "5/10 Red Light District", notes: "Low-sec only" },
+            { name: "Blood Yard", faction: "Blood Raiders", difficulty: 5, security: "Low", escalation: "6/10 Crimson Hand Depot", notes: "Low-sec only" },
+            { name: "Guristas Yard", faction: "Guristas", difficulty: 5, security: "Low", escalation: "5/10 Hallucinogen Waypoint", notes: "Low-sec only" },
+            { name: "Sansha Yard", faction: "Sansha's Nation", difficulty: 5, security: "Low", escalation: "6/10 War Supply Complex", notes: "Low-sec only" },
+            { name: "Serpentis Yard", faction: "Serpentis", difficulty: 5, security: "Low", escalation: "6/10 Logistical Outpost", notes: "Low-sec only" },
+            { name: "Drone Surveillance", faction: "Rogue Drones", difficulty: 5, security: "Low", escalation: "3/10 Asteroid Infestation", notes: "Low-sec only" },
+            
+            // TIER 6 - Rally Point
+            { name: "Angel Rally Point", faction: "Angel Cartel", difficulty: 6, security: "Low/Null", escalation: "6/10 Mineral Acquisition", notes: "Harder spawns" },
+            { name: "Blood Rally Point", faction: "Blood Raiders", difficulty: 6, security: "Low/Null", escalation: "6/10 Crimson Hand Depot", notes: "Harder spawns" },
+            { name: "Guristas Rally Point", faction: "Guristas", difficulty: 6, security: "Low/Null", escalation: "6/10 Troop Reinvigoration", notes: "Harder spawns" },
+            { name: "Sansha Rally Point", faction: "Sansha's Nation", difficulty: 6, security: "Low/Null", escalation: "6/10 War Supply Complex", notes: "Harder spawns" },
+            { name: "Serpentis Rally Point", faction: "Serpentis", difficulty: 6, security: "Low/Null", escalation: "6/10 Logistical Outpost", notes: "Harder spawns" },
+            { name: "Drone Menagerie", faction: "Rogue Drones", difficulty: 6, security: "Low/Null", escalation: "5/10 Drone Hive", notes: "Harder spawns" },
+            
+            // TIER 7 - Port
+            { name: "Angel Port", faction: "Angel Cartel", difficulty: 7, security: "Low/Null", escalation: "7/10 Military Ops Complex", notes: "Requires BC/BS" },
+            { name: "Blood Port", faction: "Blood Raiders", difficulty: 7, security: "Low/Null", escalation: "7/10 Coordination Center", notes: "Requires BC/BS" },
+            { name: "Guristas Port", faction: "Guristas", difficulty: 7, security: "Low/Null", escalation: "7/10 Military Ops Complex", notes: "Requires BC/BS" },
+            { name: "Sansha Port", faction: "Sansha's Nation", difficulty: 7, security: "Low/Null", escalation: "7/10 Military Ops Complex", notes: "Requires BC/BS" },
+            { name: "Serpentis Port", faction: "Serpentis", difficulty: 7, security: "Low/Null", escalation: "7/10 Paramilitary Complex", notes: "Requires BC/BS" },
+            { name: "Drone Herd", faction: "Rogue Drones", difficulty: 7, security: "Low/Null", escalation: "5/10 Drone Hive", notes: "Requires BC/BS" },
+            
+            // TIER 8 - Hub
+            { name: "Angel Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "8/10 Prisoner Retention", notes: "BS recommended" },
+            { name: "Blood Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "8/10 Prison Camp", notes: "BS recommended" },
+            { name: "Guristas Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "8/10 Pith's Penal Complex", notes: "BS recommended" },
+            { name: "Sansha Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "8/10 Prison Camp", notes: "BS recommended" },
+            { name: "Serpentis Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "8/10 Prison Camp", notes: "BS recommended" },
+            { name: "Drone Squad", faction: "Rogue Drones", difficulty: 8, security: "Low/Null", escalation: "10/10 Drone Hive", notes: "BS recommended" },
+            
+            // TIER 9 - Haven (Null-Sec Only)
+            { name: "Angel Haven", faction: "Angel Cartel", difficulty: 9, security: "Null", escalation: "10/10 Naval Shipyard", notes: "Null-sec only | BS required" },
+            { name: "Blood Haven", faction: "Blood Raiders", difficulty: 9, security: "Null", escalation: "10/10 Naval Shipyard", notes: "Null-sec only | BS required" },
+            { name: "Guristas Haven", faction: "Guristas", difficulty: 9, security: "Null", escalation: "10/10 The Maze", notes: "Null-sec only | BS required" },
+            { name: "Sansha Haven", faction: "Sansha's Nation", difficulty: 9, security: "Null", escalation: "10/10 Centus Assembly", notes: "Null-sec only | BS required" },
+            { name: "Serpentis Haven", faction: "Serpentis", difficulty: 9, security: "Null", escalation: "10/10 Fleet Shipyard", notes: "Null-sec only | BS required" },
+            { name: "Drone Patrol", faction: "Rogue Drones", difficulty: 9, security: "Null", escalation: "10/10 Drone Hive", notes: "Null-sec only | BS required" },
+            
+            // TIER 10 - Sanctum (Null-Sec Only - Hardest)
+            { name: "Angel Sanctum", faction: "Angel Cartel", difficulty: 10, security: "Null", escalation: "None", notes: "Hardest | Carrier/Marauder" },
+            { name: "Blood Sanctum", faction: "Blood Raiders", difficulty: 10, security: "Null", escalation: "10/10 Naval Shipyard", notes: "Hardest | Carrier/Marauder" },
+            { name: "Guristas Sanctum", faction: "Guristas", difficulty: 10, security: "Null", escalation: "10/10 The Maze", notes: "Hardest | Carrier/Marauder" },
+            { name: "Sansha Sanctum", faction: "Sansha's Nation", difficulty: 10, security: "Null", escalation: "10/10 Centus Assembly", notes: "Hardest | Carrier/Marauder" },
+            { name: "Serpentis Sanctum", faction: "Serpentis", difficulty: 10, security: "Null", escalation: "10/10 Fleet Shipyard", notes: "Hardest | Carrier/Marauder" },
+            { name: "Drone Horde", faction: "Rogue Drones", difficulty: 10, security: "Null", escalation: "10/10 Drone Hive", notes: "Hardest | Carrier/Marauder" },
+            
+            // Elite Variants (Hidden, Forsaken, Forlorn)
+            { name: "Angel Forsaken Hub", faction: "Angel Cartel", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Blood Forsaken Hub", faction: "Blood Raiders", difficulty: 8, security: "Low/Null", escalation: "9/10 DED", notes: "Elite variant | Faction spawns" },
+            { name: "Guristas Forsaken Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Sansha Forsaken Hub", faction: "Sansha's Nation", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+            { name: "Serpentis Forsaken Hub", faction: "Serpentis", difficulty: 8, security: "Low/Null", escalation: "9/10 Fleet Staging", notes: "Elite variant | Faction spawns" },
+        ];
+
         let currentSort = { column: 0, ascending: true };
         let filteredSites = [...explorationSites];
+        let filteredCombat = [...combatAnomalies];
+        let currentTab = 'exploration';
 
         // Initialize page
         function init() {
             renderTable(explorationSites);
+            renderCombatTable(combatAnomalies);
             updateStats();
             setupEventListeners();
         }
 
-        // Render table
+        // Switch tabs
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+
+        // Render exploration table
         function renderTable(sites) {
             const tbody = document.getElementById('tableBody');
             
@@ -972,32 +1457,67 @@
 
             tbody.innerHTML = sites.map(site => `
                 <tr>
-                    <td class="site-name">${site.name}</td>
-                    <td>${site.type}</td>
-                    <td><span class="status-badge status-${site.safety}">${site.safety.toUpperCase()}</span></td>
-                    <td>${site.region}</td>
-                    <td style="color: var(--text-secondary); font-size: 0.9rem;">${site.notes}</td>
+                    <td data-label="Site" class="site-name">${site.name}</td>
+                    <td data-label="Type">${site.type}</td>
+                    <td data-label="Safety"><span class="status-badge status-${site.safety}">${site.safety.toUpperCase()}</span></td>
+                    <td data-label="Region">${site.region}</td>
+                    <td data-label="Notes" style="color: var(--text-secondary); font-size: 0.95rem;">${site.notes}</td>
                 </tr>
             `).join('');
         }
 
+        // Render combat table
+        function renderCombatTable(sites) {
+            const tbody = document.getElementById('combatTableBody');
+            
+            if (sites.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">No combat sites found matching your filters</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sites.map(site => `
+                <tr>
+                    <td data-label="Site" class="site-name">${site.name}</td>
+                    <td data-label="Faction">${site.faction}</td>
+                    <td data-label="Difficulty"><span class="status-badge ${getDifficultyClass(site.difficulty)}">TIER ${site.difficulty}</span></td>
+                    <td data-label="Security">${site.security}</td>
+                    <td data-label="Escalation" style="color: var(--accent-secondary); font-size: 0.9rem;">${site.escalation}</td>
+                    <td data-label="Notes" style="color: var(--text-secondary); font-size: 0.95rem;">${site.notes}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getDifficultyClass(difficulty) {
+            if (difficulty <= 3) return 'status-safe';
+            if (difficulty <= 7) return 'status-warning';
+            return 'status-unsafe';
+        }
+
         // Update statistics
         function updateStats() {
-            document.getElementById('totalSites').textContent = explorationSites.length;
+            document.getElementById('totalSites').textContent = explorationSites.length + combatAnomalies.length;
             document.getElementById('safeSites').textContent = explorationSites.filter(s => s.safety === 'safe').length;
             document.getElementById('unsafeSites').textContent = explorationSites.filter(s => s.safety === 'unsafe').length;
+            document.getElementById('combatSites').textContent = combatAnomalies.length;
         }
 
         // Setup event listeners
         function setupEventListeners() {
+            // Exploration filters
             document.getElementById('searchInput').addEventListener('input', applyFilters);
             document.getElementById('safetyFilter').addEventListener('change', applyFilters);
             document.getElementById('typeFilter').addEventListener('change', applyFilters);
             document.getElementById('regionFilter').addEventListener('change', applyFilters);
             document.getElementById('gasFilter').addEventListener('change', applyFilters);
+            
+            // Combat filters
+            document.getElementById('combatSearchInput').addEventListener('input', applyCombatFilters);
+            document.getElementById('combatFactionFilter').addEventListener('change', applyCombatFilters);
+            document.getElementById('combatSecFilter').addEventListener('change', applyCombatFilters);
+            document.getElementById('combatDifficultyFilter').addEventListener('change', applyCombatFilters);
         }
 
-        // Apply filters
+        // Apply exploration filters
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const safety = document.getElementById('safetyFilter').value.toLowerCase();
@@ -1019,12 +1539,37 @@
             renderTable(filteredSites);
         }
 
-        // Quick filter
+        // Apply combat filters
+        function applyCombatFilters() {
+            const search = document.getElementById('combatSearchInput').value.toLowerCase();
+            const faction = document.getElementById('combatFactionFilter').value.toLowerCase();
+            const security = document.getElementById('combatSecFilter').value.toLowerCase();
+            const difficulty = document.getElementById('combatDifficultyFilter').value;
+
+            filteredCombat = combatAnomalies.filter(site => {
+                const matchSearch = site.name.toLowerCase().includes(search) || 
+                                  site.notes.toLowerCase().includes(search);
+                const matchFaction = !faction || site.faction.toLowerCase().includes(faction);
+                const matchSecurity = !security || site.security.toLowerCase().includes(security);
+                
+                let matchDifficulty = true;
+                if (difficulty) {
+                    if (difficulty === '1') matchDifficulty = site.difficulty === 1;
+                    else if (difficulty === '2-4') matchDifficulty = site.difficulty >= 2 && site.difficulty <= 4;
+                    else if (difficulty === '5-7') matchDifficulty = site.difficulty >= 5 && site.difficulty <= 7;
+                    else if (difficulty === '8-10') matchDifficulty = site.difficulty >= 8 && site.difficulty <= 10;
+                }
+
+                return matchSearch && matchFaction && matchSecurity && matchDifficulty;
+            });
+
+            renderCombatTable(filteredCombat);
+        }
+
+        // Quick filter for exploration
         function quickFilter(filter) {
             // Remove active class from all chips
             document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
-            
-            // Add active class to clicked chip
             event.target.classList.add('active');
 
             // Reset all filters first
@@ -1051,7 +1596,7 @@
                     break;
                 case 'mykoserocin':
                     document.getElementById('typeFilter').value = 'gas';
-                    document.getElementById('gasFilter').value = 'lime,malachite,amber,golden,celadon,viridian,azure,vermillion';
+                    document.getElementById('gasFilter').value = 'mykoserocin';
                     break;
                 case 'fullerite':
                     document.getElementById('typeFilter').value = 'gas';
@@ -1062,7 +1607,40 @@
             applyFilters();
         }
 
-        // Sort table
+        // Quick filter for combat
+        function combatQuickFilter(filter) {
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('combatFactionFilter').value = '';
+            document.getElementById('combatSecFilter').value = '';
+            document.getElementById('combatDifficultyFilter').value = '';
+
+            switch(filter) {
+                case 'angel':
+                    document.getElementById('combatFactionFilter').value = 'angel';
+                    break;
+                case 'blood':
+                    document.getElementById('combatFactionFilter').value = 'blood';
+                    break;
+                case 'guristas':
+                    document.getElementById('combatFactionFilter').value = 'guristas';
+                    break;
+                case 'sansha':
+                    document.getElementById('combatFactionFilter').value = 'sansha';
+                    break;
+                case 'serpentis':
+                    document.getElementById('combatFactionFilter').value = 'serpentis';
+                    break;
+                case 'highsec':
+                    document.getElementById('combatSecFilter').value = 'high';
+                    break;
+            }
+            
+            applyCombatFilters();
+        }
+
+        // Sort exploration table
         function sortTable(column) {
             if (currentSort.column === column) {
                 currentSort.ascending = !currentSort.ascending;
@@ -1084,6 +1662,23 @@
             });
 
             renderTable(filteredSites);
+        }
+
+        // Sort combat table
+        function sortCombatTable(column) {
+            const keys = ['name', 'faction', 'difficulty', 'security', 'escalation', 'notes'];
+            const key = keys[column];
+
+            filteredCombat.sort((a, b) => {
+                let valA = typeof a[key] === 'number' ? a[key] : a[key].toLowerCase();
+                let valB = typeof b[key] === 'number' ? b[key] : b[key].toLowerCase();
+
+                if (valA < valB) return -1;
+                if (valA > valB) return 1;
+                return 0;
+            });
+
+            renderCombatTable(filteredCombat);
         }
 
         // Modal functions
