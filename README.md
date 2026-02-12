@@ -3,9 +3,6 @@
 
 Database referensi lengkap untuk **exploration sites** dan **combat anomalies** di game EVE Online.
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Deployed-brightgreen?logo=githubpages)](https://kingsyah.github.io/exploNexus/)  
-![Status](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
-
 ## Apa itu Nebula Nexus?
 
 Nebula Nexus adalah **database visual** yang membantu pilot EVE Online menemukan dan memahami berbagai macam situs (sites) di New Eden, terutama:
