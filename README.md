@@ -14,7 +14,7 @@ Nebula Nexus adalah **database visual** yang membantu pilot EVE Online menemukan
 - Combat anomalies
 - Safe / high-value sites
 
-Saat ini masih dalam tahap pengembangan awal — tabel masih kosong, tapi fitur filtering dan tampilan sudah siap.
+Saat ini masih dalam tahap pengembangan awal, tapi fitur filtering dan tampilan sudah siap.
 
 ## Fitur Utama
 
