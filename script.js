@@ -275,9 +275,9 @@ const COMBAT_ANOMALIES = [
     { name: "Guristas Port", faction: "Guristas", difficulty: 7, security: "Low/Null", escalation: "Yes", notes: "High difficulty. Can escalate to DED 7/10(Gurista Military Operations Complex)" },
     { name: "Guristas Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "Yes", notes: "Elite Hub. May escalate to DED 8/10 (Pith's Penal Complex)" },
     { name: "Guristas Hidden Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "Yes", notes: "Elite Hub. May escalate to DED 9/10 (Dread Guristas Fleet Staging Point)" },
-    { name: "Guristas Forsaken Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "Yes", notes: "Very hard Hub. Can escalate to DED 9/10 (Dread Guristas Fleet Staging Point)" },
+    { name: "Guristas Forsaken Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "Yes", notes: "Very hard Hub -drone friendly-. Can escalate to DED 9/10 (Dread Guristas Fleet Staging Point)" },
     { name: "Guristas Forlorn Hub", faction: "Guristas", difficulty: 8, security: "Low/Null", escalation: "Yes", notes: "Very hard Hub. Can escalate to DED 9/10 (Dread Guristas Fleet Staging Point)" },
-    { name: "Guristas Haven", faction: "Guristas", difficulty: 9, security: "Null", escalation: "Yes", notes: "High-tier site. Can escalate to DED 10/10 (The Maze)" },
+    { name: "Guristas Haven", faction: "Guristas", difficulty: 9, security: "Null", escalation: "Yes", notes: "High-tier site (Rock -drone friendly- and Gas -drone enemy-). Can escalate to DED 10/10 (The Maze)" },
     { name: "Guristas Sanctum", faction: "Guristas", difficulty: 10, security: "Null", escalation: "Yes", notes: "Hardest Guristas site. Can escalate to DED 10/10 (The Maze)" },
 
     // === SANSHA'S NATION ===
