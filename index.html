@@ -2,335 +2,272 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEBULA NEXUS - EVE Online Sites Database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEBULA NEXUS — EVE Online Sites Database</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💀</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <!-- Header -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <h1>NEBULA <span>NEXUS</span></h1>
-                <div class="nav-links">
-                    <button class="btn" onclick="showModal('about')">About</button>
-                    <button class="btn" onclick="showModal('guide')">Guide</button>
-                    <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" target="_blank" class="btn">💀 Danger!!</a>
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">💀</span>
+                <div>
+                    <h1>NEBULA <span class="accent">NEXUS</span></h1>
+                    <p class="subtitle">EVE Online Sites Database</p>
                 </div>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="showModal('about')" aria-label="About">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/></svg>
+                </button>
+                <button class="icon-btn" onclick="showModal('guide')" aria-label="Guide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2L14 6.5V17.5L19 13V2M6.5 5C4.55 8 4 10.5 4 12C4 14.5 5 17 7.5 19C9.5 17.5 10.5 15.5 10.5 13C10.5 10.5 9.5 8 6.5 5Z"/></svg>
+                </button>
+                <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" target="_blank" class="icon-btn danger" aria-label="Danger">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 4l7.53 13H4.47L12 6zm-1 4v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+                </a>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Stats Overview -->
-        <div class="stats-grid" id="statsGrid">
-            <div class="stat-card">
-                <div class="stat-label">Total Sites</div>
-                <div class="stat-value" id="totalSites">0</div>
+    <main>
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat">
+                <span class="stat-val" id="totalSites">0</span>
+                <span class="stat-lbl">Total</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Exploration</div>
-                <div class="stat-value" id="explorationSites">0</div>
+            <div class="stat">
+                <span class="stat-val" id="explorationSites">0</span>
+                <span class="stat-lbl">Explore</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Combat</div>
-                <div class="stat-value" id="combatSites">0</div>
+            <div class="stat">
+                <span class="stat-val" id="combatSites">0</span>
+                <span class="stat-lbl">Combat</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Safe Sites</div>
-                <div class="stat-value" id="safeSites">0</div>
+            <div class="stat">
+                <span class="stat-val" id="safeSites">0</span>
+                <span class="stat-lbl">Safe</span>
+            </div>
+            <div class="stat">
+                <span class="stat-val" id="showingCount">0</span>
+                <span class="stat-lbl">Showing</span>
             </div>
         </div>
 
         <!-- Tabs -->
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab('exploration')">Exploration Sites</div>
-            <div class="tab" onclick="switchTab('combat')">Combat Anomalies</div>
+        <div class="tab-bar">
+            <button class="tab active" data-tab="exploration" onclick="switchTab('exploration', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                Exploration
+            </button>
+            <button class="tab" data-tab="combat" onclick="switchTab('combat', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1.06 13.54L7.4 12l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41-5.64 5.66z"/></svg>
+                Combat
+            </button>
         </div>
 
-        <!-- Exploration Tab -->
-        <div id="explorationTab" class="tab-content active">
-            <!-- Filters -->
-            <div class="filter-section">
-                <h3>🔍 Filters</h3>
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label>Search</label>
-                        <input type="text" id="searchInput" placeholder="Search sites...">
-                    </div>
-                    <div class="filter-group">
-                        <label>Safety</label>
-                        <select id="safetyFilter">
-                            <option value="">All</option>
-                            <option value="safe">Safe</option>
-                            <option value="unsafe">Unsafe</option>
-                            <option value="warning">Warning</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Type</label>
-                        <select id="typeFilter">
-                            <option value="">All Types</option>
-                            <option value="gas">Gas</option>
-                            <option value="relic">Relic</option>
-                            <option value="data">Data</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Region</label>
-                        <select id="regionFilter">
-                            <option value="">All Regions</option>
-                            <option value="highsec">Highsec</option>
-                            <option value="lowsec">Lowsec</option>
-                            <option value="nullsec">Nullsec</option>
-                            <option value="wormhole">Wormhole</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Gas Type</label>
-                        <select id="gasFilter">
-                            <option value="">All Gas</option>
-                            <option value="mykoserocin">Mykoserocin</option>
-                            <option value="cytoserocin">Cytoserocin</option>
-                            <option value="fullerite">Fullerite</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="quick-filters">
-                    <div class="chip" onclick="quickFilter('safe')">✓ Safe Sites</div>
-                    <div class="chip" onclick="quickFilter('gas')">⛽ Gas Sites</div>
-                    <div class="chip" onclick="quickFilter('relic')">🏺 Relic Sites</div>
-                    <div class="chip" onclick="quickFilter('data')">💾 Data Sites</div>
-                    <div class="chip" onclick="quickFilter('wormhole')">🌀 Wormhole</div>
-                    <div class="chip" onclick="quickFilter('mykoserocin')">Mykoserocin</div>
-                    <div class="chip" onclick="quickFilter('fullerite')">Fullerite</div>
-                </div>
+        <!-- Search & Filter -->
+        <div class="search-filter-section">
+            <div class="search-box">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="searchInput" placeholder="Search across all fields..." autocomplete="off">
+                <button class="clear-btn" id="clearSearch" onclick="clearAllFilters()" style="display:none;">✕</button>
+            </div>
+            
+            <!-- Exploration Filters -->
+            <div id="explorationFilters" class="filter-row">
+                <select id="safetyFilter">
+                    <option value="">Safety</option>
+                    <option value="safe">✓ Safe</option>
+                    <option value="unsafe">⚠ Unsafe</option>
+                    <option value="warning">⚡ Warning</option>
+                </select>
+                <select id="typeFilter">
+                    <option value="">Type</option>
+                    <option value="gas">⛽ Gas</option>
+                    <option value="relic">🏺 Relic</option>
+                    <option value="data">💾 Data</option>
+                    <option value="data/relic">👻 Ghost</option>
+                    <option value="relic - combat">⚔️ Combat Relic</option>
+                </select>
+                <select id="regionFilter">
+                    <option value="">Region</option>
+                    <option value="highsec">Highsec</option>
+                    <option value="lowsec">Lowsec</option>
+                    <option value="nullsec">Nullsec</option>
+                    <option value="wormhole">Wormhole</option>
+                    <option value="special">Special</option>
+                </select>
+                <select id="gasFilter">
+                    <option value="">Gas Type</option>
+                    <option value="mykoserocin">Mykoserocin</option>
+                    <option value="cytoserocin">Cytoserocin</option>
+                    <option value="fullerite">Fullerite</option>
+                </select>
             </div>
 
-            <!-- Table -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h2>Exploration Sites Database</h2>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th onclick="sortTable(0)">Site Name ▼</th>
-                                <th onclick="sortTable(1)">Type ▼</th>
-                                <th onclick="sortTable(2)">Safety ▼</th>
-                                <th onclick="sortTable(3)">Region ▼</th>
-                                <th onclick="sortTable(4)">Notes ▼</th>
-                            </tr>
-                        </thead>
-                        <tbody id="explorationTableBody">
-                            <!-- Populated by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Combat Tab -->
-        <div id="combatTab" class="tab-content">
             <!-- Combat Filters -->
-            <div class="filter-section">
-                <h3>🔍 Filters</h3>
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label>Search</label>
-                        <input type="text" id="combatSearchInput" placeholder="Search combat sites...">
-                    </div>
-                    <div class="filter-group">
-                        <label>Faction</label>
-                        <select id="combatFactionFilter">
-                            <option value="">All Factions</option>
-                            <option value="angel">Angel Cartel</option>
-                            <option value="blood">Blood Raiders</option>
-                            <option value="guristas">Guristas</option>
-                            <option value="sansha">Sansha's Nation</option>
-                            <option value="serpentis">Serpentis</option>
-                            <option value="rogue">Rogue Drones</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Security</label>
-                        <select id="combatSecFilter">
-                            <option value="">All Security</option>
-                            <option value="high">Highsec</option>
-                            <option value="low">Lowsec</option>
-                            <option value="null">Nullsec</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Difficulty</label>
-                        <select id="combatDifficultyFilter">
-                            <option value="">All Difficulty</option>
-                            <option value="1">Easy (1)</option>
-                            <option value="2-4">Medium (2-4)</option>
-                            <option value="5-7">Hard (5-7)</option>
-                            <option value="8-10">Very Hard (8-10)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="quick-filters">
-                    <div class="chip" onclick="combatQuickFilter('angel')">Angel Cartel</div>
-                    <div class="chip" onclick="combatQuickFilter('blood')">Blood Raiders</div>
-                    <div class="chip" onclick="combatQuickFilter('guristas')">Guristas</div>
-                    <div class="chip" onclick="combatQuickFilter('sansha')">Sansha</div>
-                    <div class="chip" onclick="combatQuickFilter('serpentis')">Serpentis</div>
-                    <div class="chip" onclick="combatQuickFilter('rogue')">Rogue Drones</div>
-                    <div class="chip" onclick="combatQuickFilter('highsec')">Highsec Only</div>
-                </div>
+            <div id="combatFilters" class="filter-row" style="display:none;">
+                <select id="combatFactionFilter">
+                    <option value="">Faction</option>
+                    <option value="angel">Angel Cartel</option>
+                    <option value="blood">Blood Raiders</option>
+                    <option value="guristas">Guristas</option>
+                    <option value="sansha">Sansha's Nation</option>
+                    <option value="serpentis">Serpentis</option>
+                    <option value="rogue">Rogue Drones</option>
+                    <option value="mordu">Mordu's Legion</option>
+                </select>
+                <select id="combatSecFilter">
+                    <option value="">Security</option>
+                    <option value="high">Highsec</option>
+                    <option value="low">Lowsec</option>
+                    <option value="null">Nullsec</option>
+                </select>
+                <select id="combatDifficultyFilter">
+                    <option value="">Difficulty</option>
+                    <option value="1">★ (1)</option>
+                    <option value="2-4">★★ (2-4)</option>
+                    <option value="5-7">★★★ (5-7)</option>
+                    <option value="8-10">★★★★ (8-10)</option>
+                </select>
+                <select id="combatEscalationFilter">
+                    <option value="">Escalation</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
             </div>
 
-            <!-- Combat Table -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h2>Combat Anomalies Database</h2>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th onclick="sortCombatTable(0)">Anomaly Name ▼</th>
-                                <th onclick="sortCombatTable(1)">Faction ▼</th>
-                                <th onclick="sortCombatTable(2)">Difficulty ▼</th>
-                                <th onclick="sortCombatTable(3)">Security ▼</th>
-                                <th onclick="sortCombatTable(4)">Escalation ▼</th>
-                                <th onclick="sortCombatTable(5)">Notes ▼</th>
-                            </tr>
-                        </thead>
-                        <tbody id="combatTableBody">
-                            <!-- Populated by JavaScript -->
-                        </tbody>
-                    </table>
+            <!-- Quick Chips -->
+            <div class="chips" id="explorationChips">
+                <button class="chip" data-filter="safe" onclick="quickFilter(this, 'safe')">✓ Safe</button>
+                <button class="chip" data-filter="gas" onclick="quickFilter(this, 'gas')">⛽ Gas</button>
+                <button class="chip" data-filter="relic" onclick="quickFilter(this, 'relic')">🏺 Relic</button>
+                <button class="chip" data-filter="data" onclick="quickFilter(this, 'data')">💾 Data</button>
+                <button class="chip" data-filter="wormhole" onclick="quickFilter(this, 'wormhole')">🌀 WH</button>
+                <button class="chip" data-filter="mykoserocin" onclick="quickFilter(this, 'mykoserocin')">Myko</button>
+                <button class="chip" data-filter="fullerite" onclick="quickFilter(this, 'fullerite')">Full</button>
+                <button class="chip" data-filter="ghost" onclick="quickFilter(this, 'ghost')">👻 Ghost</button>
+            </div>
+            <div class="chips" id="combatChips" style="display:none;">
+                <button class="chip" data-filter="angel" onclick="combatQuickFilter(this, 'angel')">Angel</button>
+                <button class="chip" data-filter="blood" onclick="combatQuickFilter(this, 'blood')">Blood</button>
+                <button class="chip" data-filter="guristas" onclick="combatQuickFilter(this, 'guristas')">Guristas</button>
+                <button class="chip" data-filter="sansha" onclick="combatQuickFilter(this, 'sansha')">Sansha</button>
+                <button class="chip" data-filter="serpentis" onclick="combatQuickFilter(this, 'serpentis')">Serpentis</button>
+                <button class="chip" data-filter="rogue" onclick="combatQuickFilter(this, 'rogue')">Drones</button>
+                <button class="chip" data-filter="highsec" onclick="combatQuickFilter(this, 'highsec')">Highsec</button>
+                <button class="chip" data-filter="escalation" onclick="combatQuickFilter(this, 'escalation')">🚀 Escal.</button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-section">
+            <div class="results-header">
+                <span id="resultsLabel">Showing 0 sites</span>
+                <div class="sort-controls">
+                    <select id="sortBy" onchange="applySortAndRender()">
+                        <option value="name-asc">Name A→Z</option>
+                        <option value="name-desc">Name Z→A</option>
+                        <option value="safety-asc">Safe First</option>
+                        <option value="safety-desc">Unsafe First</option>
+                        <option value="type-asc">Type A→Z</option>
+                        <option value="region-asc">Region A→Z</option>
+                    </select>
                 </div>
             </div>
+            <div id="siteList" class="site-list"></div>
+            <div id="noResults" class="no-results" style="display:none;">
+                <span class="no-results-icon">🔍</span>
+                <p>No sites match your filters</p>
+                <button onclick="clearAllFilters()" class="btn-reset">Reset Filters</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-sheet" id="modalSheet">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h2 id="detailTitle"></h2>
+                <button class="close-btn" onclick="closeModal('detail')">✕</button>
+            </div>
+            <div class="modal-body" id="detailBody"></div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-title">Nebula Nexus</div>
-                <div class="footer-creator">
-                    Forged in New Eden by <strong>KingSyah</strong><br>
-                    Created for EVE Online Indonesian Community
-                </div>
-                
-                <div class="footer-divider"></div>
-                
-                <div class="icon-links">
-                    <a href="https://kingsyah.github.io/evetimeinfo/" target="_blank" rel="noopener" class="icon-link icon-link-time">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
-                        </svg>
-                        EVE Time Info
-                    </a>
-                    <a href="https://kingsyah.github.io/KalkulatorYield/" target="_blank" rel="noopener" class="icon-link icon-link-calc">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z"/>
-                        </svg>
-                        Kalkulator Yield
-                    </a>
-                    <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" target="_blank" rel="noopener" class="icon-link icon-link-about">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
-                        </svg>
-                        Documentation
-                    </a>
-                </div>
-                
-                <div class="footer-divider"></div>
-                
-                <div class="footer-legal">
-                    All EVE Online materials © <a href="https://www.ccpgames.com/" target="_blank" rel="noopener">CCP Games</a><br>
-                    EVE Online and all associated logos and designs are trademarks or registered trademarks of CCP hf.<br>
-                    All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features<br>
-                    of the intellectual property relating to these trademarks are likewise the property of CCP hf.
-                </div>
-                
-                <div class="footer-badge">○ Fly Safe ○</div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modals -->
+    <!-- About Modal -->
     <div id="aboutModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
             <div class="modal-header">
-                <h2>About Nebula Nexus</h2>
-                <button class="close-btn" onclick="closeModal('about')">×</button>
+                <h2>About</h2>
+                <button class="close-btn" onclick="closeModal('about')">✕</button>
             </div>
             <div class="modal-body">
-                <p>Nebula Nexus is a comprehensive database for EVE Online exploration and combat sites. This tool helps capsuleers quickly find and filter sites based on safety, type, region, and difficulty.</p>
-                
+                <p>Nebula Nexus is a comprehensive database for EVE Online exploration and combat sites. Built for capsuleers who need quick, reliable information about sites in New Eden.</p>
                 <h3>Data Sources</h3>
-                <ul>
-                    <li>EVE University Wiki - Gas Cloud Harvesting</li>
-                    <li>EVE University Wiki - Relic and Data Sites</li>
-                    <li>EVE University Wiki - Combat Sites & Anomalies</li>
-                </ul>
-
-                <h3>Features</h3>
-                <ul>
-                    <li>Comprehensive exploration sites database</li>
-                    <li>Complete combat anomalies listing</li>
-                    <li>Advanced filtering system</li>
-                    <li>Safety indicators for all sites</li>
-                    <li>Quick filter chips for common searches</li>
-                </ul>
-
+                <ul><li>EVE University Wiki</li></ul>
                 <h3>Disclaimer</h3>
-                <p>This is a fan-made tool and is not affiliated with CCP Games. All EVE Online content and materials are property of CCP Games.</p>
+                <p>Fan-made tool, not affiliated with CCP Games. All EVE Online content is property of CCP hf.</p>
             </div>
         </div>
     </div>
 
+    <!-- Guide Modal -->
     <div id="guideModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
             <div class="modal-header">
-                <h2>User Guide</h2>
-                <button class="close-btn" onclick="closeModal('guide')">×</button>
+                <h2>Guide</h2>
+                <button class="close-btn" onclick="closeModal('guide')">✕</button>
             </div>
             <div class="modal-body">
                 <h3>Safety Indicators</h3>
                 <ul>
-                    <li><strong>Safe:</strong> No NPCs present, can be done safely with exploration frigates</li>
-                    <li><strong>Unsafe:</strong> Contains hostile NPCs that will attack on sight</li>
-                    <li><strong>Warning:</strong> NPCs spawn after timer or contain special mechanics</li>
+                    <li><strong class="text-safe">Safe:</strong> No NPCs, safe with exploration frigates</li>
+                    <li><strong class="text-unsafe">Unsafe:</strong> Hostile NPCs will attack</li>
+                    <li><strong class="text-warning">Warning:</strong> NPCs spawn after timer / special mechanics</li>
                 </ul>
-
-                <h3>Exploration Sites</h3>
+                <h3>Site Types</h3>
                 <ul>
-                    <li><strong>Gas Sites:</strong> Harvest gas clouds for profit. Wormhole gas (Fullerite) is most valuable</li>
-                    <li><strong>Relic Sites:</strong> Hack containers for salvage materials and blueprint copies</li>
-                    <li><strong>Data Sites:</strong> Hack containers for datacores, decryptors, and blueprints</li>
+                    <li><strong>Gas:</strong> Harvest gas clouds. WH Fullerite = most valuable</li>
+                    <li><strong>Relic:</strong> Hack containers for salvage & BPCs</li>
+                    <li><strong>Data:</strong> Hack containers for datacores & decryptors</li>
+                    <li><strong>Ghost:</strong> Invisible timer, cans explode. Ascendancy BPCs</li>
                 </ul>
-
-                <h3>Combat Anomalies</h3>
+                <h3>Combat Difficulty</h3>
                 <ul>
-                    <li><strong>Hideaway (Difficulty 1):</strong> Easiest sites, low bounties</li>
-                    <li><strong>Burrow/Den (Difficulty 2-3):</strong> Easy-Medium difficulty</li>
-                    <li><strong>Yard/Rally Point (Difficulty 4-6):</strong> Medium-Hard difficulty</li>
-                    <li><strong>Port/Hub (Difficulty 7-8):</strong> Hard difficulty</li>
-                    <li><strong>Haven/Sanctum (Difficulty 9-10):</strong> Hardest sites, best rewards</li>
-                </ul>
-
-                <h3>Using Filters</h3>
-                <ul>
-                    <li>Use the search box to find specific site names</li>
-                    <li>Select dropdowns to filter by safety, type, region, or faction</li>
-                    <li>Click quick filter chips for instant common filters</li>
-                    <li>Click table headers to sort by that column</li>
+                    <li><strong>★ 1:</strong> Hideaway — easiest, low bounties</li>
+                    <li><strong>★★★ 5-7:</strong> Yard/Rally — medium-hard</li>
+                    <li><strong>★★★★ 8-10:</strong> Haven/Sanctum — hardest, best rewards</li>
                 </ul>
             </div>
         </div>
     </div>
+
+    <!-- COPYRIGHT FOOTER -->
+    <footer>
+        <div class="footer">
+            <div class="footer-inner">
+                <span class="footer-crown">👑</span>
+                <span class="footer-text" id="copyright-text"></span>
+                <span class="footer-crown">👑</span>
+            </div>
+        </div>
+        <div class="footer-links">
+            <a href="https://kingsyah.github.io/evetimeinfo/" target="_blank">🕐 EVE Time</a>
+            <a href="https://kingsyah.github.io/KalkulatorYield/" target="_blank">📊 Yield Calc</a>
+            <a href="https://www.notion.so/1df557b9175680fe88d8f506c43e6dc8" target="_blank">📖 Docs</a>
+        </div>
+        <p class="footer-legal">All EVE Online materials © <a href="https://www.ccpgames.com/" target="_blank">CCP Games</a></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
