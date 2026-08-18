@@ -1,4 +1,4 @@
-# NEBULA NEXUS  
+# NEBULA NEXUS  ----> PINDAH
 **EVE Online Sites Database** 🚀
 
 Database referensi lengkap untuk **exploration sites** dan **combat anomalies** di game EVE Online.
