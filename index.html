@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111f" />
+    <meta http-equiv="refresh" content="5;url=https://explonexus.pages.dev/" />
+    <title>exploNexus · Route Locked</title>
+    <style>
+      :root { color-scheme: dark; --void:#07111f; --cyan:#4de2e8; --ion:#367bff; --ice:#e4fbff; --dim:#a7c2d1; --safe:#70e5ad; --amber:#ffbf5b; }
+      * { box-sizing: border-box; }
+      body { min-width: 320px; min-height: 100vh; margin: 0; overflow: hidden; background: radial-gradient(circle at 80% 18%, #12446e 0, transparent 27rem), radial-gradient(circle at 6% 95%, #102b4b 0, transparent 33rem), var(--void); color:var(--ice); font-family: ui-rounded, "Avenir Next", Avenir, system-ui, sans-serif; }
+      main { position:relative; display:grid; min-height:100vh; place-items:center; padding:1.25rem; isolation:isolate; }
+      main::before, main::after { position:absolute; z-index:-1; border:1px solid rgba(77,226,232,.18); border-radius:50%; content:""; }
+      main::before { width:min(92vw,790px); height:min(46vw,390px); transform:rotate(-23deg); }
+      main::after { width:min(76vw,640px); height:min(32vw,280px); transform:rotate(29deg); border-color:rgba(54,123,255,.28); }
+      .console { position:relative; width:min(100%,720px); overflow:hidden; border:1px solid rgba(77,226,232,.58); background:rgba(7,22,39,.88); padding:clamp(1.35rem,5vw,3.1rem); box-shadow:15px 15px 0 rgba(54,123,255,.13), 0 26px 62px rgba(0,0,0,.35); text-align:center; }
+      .console::before { position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); content:""; }
+      .eyebrow { margin:0; color:var(--safe); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.7rem; font-weight:700; letter-spacing:.15em; }
+      h1 { margin:.85rem 0 0; font-size:clamp(2.65rem,10vw,5.55rem); letter-spacing:-.078em; line-height:.86; }
+      h1 span { color:var(--cyan); }
+      .copy { max-width:33rem; margin:1.35rem auto 0; color:var(--dim); font-size:clamp(1rem,2vw,1.14rem); line-height:1.65; }
+      .route { display:flex; align-items:center; justify-content:space-between; gap:.85rem; margin:1.6rem auto 0; border:1px solid rgba(77,226,232,.35); padding:.88rem 1rem; background:rgba(14,53,84,.4); text-align:left; }
+      .route small { color:var(--amber); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.55rem; letter-spacing:.12em; }
+      .route a { display:block; overflow:hidden; max-width:21rem; color:var(--ice); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:clamp(.84rem,2.4vw,1.05rem); text-overflow:ellipsis; white-space:nowrap; text-decoration-color:var(--cyan); text-underline-offset:4px; }
+      .count { display:grid; width:4.65rem; height:4.65rem; flex:0 0 auto; place-items:center; border:2px solid var(--amber); border-radius:50%; color:var(--amber); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:1.35rem; font-weight:800; box-shadow:0 0 24px rgba(255,191,91,.2); }
+      .signals { display:flex; flex-wrap:wrap; justify-content:center; gap:.45rem; margin:1.15rem auto 0; }
+      .signals span { border:1px solid rgba(112,229,173,.3); padding:.31rem .5rem; color:var(--safe); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.55rem; letter-spacing:.08em; }
+      .actions { display:flex; flex-wrap:wrap; justify-content:center; gap:.8rem; margin-top:1.45rem; }
+      .actions a, .actions button { border:1px solid var(--cyan); background:var(--cyan); padding:.78rem 1rem; color:#07111f; font:700 .74rem ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; text-decoration:none; transition:transform .16s ease-out, background .16s ease-out; }
+      .actions .ghost { background:transparent; color:var(--cyan); }
+      .actions a:hover, .actions button:hover { transform:translateY(-2px); background:#b2f7ff; }
+      .actions .ghost:hover { color:#07111f; }
+      .note { margin:1rem 0 0; color:#7796aa; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.62rem; line-height:1.55; }
+      @media (max-width:480px) { .route { align-items:flex-start; } .route a { max-width:12.5rem; } .count { width:3.7rem; height:3.7rem; font-size:1.1rem; } }
+    </style>
+  </head>
+  <body>
+    <main data-target="https://explonexus.pages.dev/">
+      <section class="console" aria-labelledby="title">
+        <p class="eyebrow">NEW EDEN FIELD INDEX / ROUTE UPDATE</p>
+        <h1 id="title">Your intel has <span>a new warp.</span></h1>
+        <p class="copy">The exploration data and community rating index have moved to their next coordinate. Same field intel; one less gate to remember.</p>
+        <div class="route">
+          <div><small>LOCKED DESTINATION</small><a href="https://explonexus.pages.dev/">explonexus.pages.dev</a></div>
+          <div class="count" aria-label="Auto-warp in 5 seconds"><span id="seconds">5</span></div>
+        </div>
+        <div class="signals"><span>FIELD DATA SYNCED</span><span>RATING INDEX ONLINE</span><span>SAFE ROUTE</span></div>
+        <div class="actions">
+          <a href="https://explonexus.pages.dev/">INITIATE WARP ↗</a>
+          <button class="ghost" type="button" id="copy">COPY COORDINATE</button>
+        </div>
+        <p class="note">If autopilot is contemplating its life choices, initiate warp manually.</p>
+      </section>
+    </main>
+    <script>
+      (() => {
+        const target = document.querySelector('main').dataset.target;
+        const seconds = document.getElementById('seconds');
+        const copy = document.getElementById('copy');
+        let remaining = 5;
+        const timer = setInterval(() => {
+          remaining -= 1;
+          seconds.textContent = String(Math.max(remaining, 0));
+          if (remaining <= 0) { clearInterval(timer); window.location.replace(target); }
+        }, 1000);
+        copy.addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(target); copy.textContent = 'COORDINATE COPIED'; setTimeout(() => { copy.textContent = 'COPY COORDINATE'; }, 1800); }
+          catch { window.prompt('Copy exploNexus coordinate:', target); }
+        });
+      })();
+    </script>
+  </body>
+</html>
